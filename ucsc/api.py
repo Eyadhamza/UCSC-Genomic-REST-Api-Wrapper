@@ -28,6 +28,8 @@ class Genome:
         return []
 
     def getChromosomes(self):
+        # call to list chromosomes from UCSC database genome -
+        # api.genome.ucsc.edu/list/chromosomes?genome=hg38
 
         return []
 
@@ -41,7 +43,9 @@ class Track:
         # return the track as an object with all required attributes
         self.trackName = trackName
 
-    def getTrackChromosomes(self):
+    def getTrackChromosomes(self, genome):
+        # list chromosomes from specified track in UCSC database genome
+        # api.genome.ucsc.edu/list/chromosomes?genome=hg38;track=gold
         return []
 
 
@@ -70,4 +74,5 @@ trackName = 'affyGnf1h'
 
 track = Track(trackName)  # an object has every attribute of track
 
-trackChromosomes = track.getTrackChromosomes()
+
+trackChromosomes = track.getTrackChromosomes(genome)
