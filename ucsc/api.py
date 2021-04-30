@@ -44,6 +44,7 @@ class Track:
 
 
     def createShema(self, genome):
+
         # api.genome.ucsc.edu/list/schema?genome=hg38;track=knownGene
         return ''
 
@@ -88,10 +89,6 @@ track = Track(trackName)  # an object has every attribute of track
 # list schema from specified track in UCSC database genome
 trackSchema = track.createShema(genome)
 
-# duplication needs to be removed of course ! WARNING
-# list chromosomes from assembly hub genome -
-
-# list chromosomes from specified track in assembly hub genome -
 
 # only one function to get the list of chromosomes
 
@@ -105,5 +102,5 @@ chromosomes2 = Chromosome.getChromosomes(genome, track=track)
 chromosomes3 = Chromosome.getChromosomes(genome, hub)
 
 # list chromosomes from specified track in assembly hub genome
-
 chromosomes4 = Chromosome.getChromosomes(genome, hub, track)
+
