@@ -14,9 +14,6 @@ class Hub:
         pass
 
 
-
-
-
 class Genome:
     def __init__(self, genomeName):
         # fetch the genome based on name
@@ -30,7 +27,6 @@ class Genome:
         #  api.genome.ucsc.edu/list/ucscGenomes
         return []
 
-
     def trackList(self):
         return []
 
@@ -41,23 +37,26 @@ class Track:
         # return the track as an object with all required attributes
         self.trackName = trackName
 
-
-
     def createShema(self, genome):
-
         # api.genome.ucsc.edu/list/schema?genome=hg38;track=knownGene
         return ''
 
 
 class Chromosome:
-    def __init__(self, genome =None, hub =None, track =None):
+    def __init__(self, genome=None, hub=None, track=None):
         # fetch the track based on name
         # return the track as an object with all required attributes
         self.trackName = trackName
 
     @staticmethod
-    def getChromosomes(genome =None, hub =None, track =None):
+    def getChromosomes(genome=None, hub=None, track=None):
         return []
+
+
+class Sequence:
+    def __init__(self, genome, chromosome, hub=None, track=None, chromStart=None, chromEnd=None):
+        # must return the
+        self.dna = None
 
 
 # returns list of available hubs names and url (can be overriding by parameter)
@@ -77,7 +76,6 @@ genomeName = 'CAST_EiJ'  # researcher will choose his desired genome based on na
 
 genome = Genome(genomeName)  # an object has every attribute of genome
 
-
 tracks = genome.trackList()
 
 trackName = 'affyGnf1h'
@@ -88,7 +86,6 @@ track = Track(trackName)  # an object has every attribute of track
 
 # list schema from specified track in UCSC database genome
 trackSchema = track.createShema(genome)
-
 
 # only one function to get the list of chromosomes
 
@@ -104,3 +101,11 @@ chromosomes3 = Chromosome.getChromosomes(genome, hub)
 # list chromosomes from specified track in assembly hub genome
 chromosomes4 = Chromosome.getChromosomes(genome, hub, track)
 
+chromosome = Chromosome(genome)
+
+chromStart = 123
+chromEnd = 543
+
+sequence = Sequence(hub, genome, track, chromosome, chromStart, chromEnd)
+
+# sequence.dna
