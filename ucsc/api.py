@@ -1,5 +1,5 @@
 class Hub:
-    def __init__(self,hubName):
+    def __init__(self, hubName):
         self.hubUrl = None
         self.hubName = hubName
 
@@ -13,14 +13,31 @@ class Hub:
         pass
 
 
+class Genome:
+    def __init__(self, genomeName):
+        self.genomeName = genomeName
+    pass
+
+    @staticmethod
+    def getAllGenomes():
+        return []
+
+
 # returns list of available hubs names and url (can be overriding by parameter)
 hubList = Hub.getAllHubs()
 
-hubName = 'ALFA Hub' # programmer will choose his desired hub based on short label
+hubName = 'ALFA Hub'  # researcher will choose his desired hub based on short label
 
-
-hub = Hub(hubName) # an object has every attribute of hub
-
+hub = Hub(hubName)  # an object has every attribute of hub
 
 # get all genomes from specified hub object
 hub.getHubData()
+
+
+# get all genomes from all UCSC Database
+genomesList = Genome.getAllGenomes()
+
+genomeName = 'CAST_EiJ'  # researcher will choose his desired genome based on name
+
+genome = Genome(genomeName) # an object has every attribute of genome
+
