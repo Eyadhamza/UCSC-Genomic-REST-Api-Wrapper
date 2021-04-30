@@ -13,6 +13,11 @@ class Hub:
         # call to api.genome.ucsc.edu/list/hubGenomes?hubUrl=http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt
         pass
 
+    def getChromosomes(self, genome):
+        # api.genome.ucsc.edu/list/chromosomes?hubUrl=http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt;genome=CAST_EiJ
+
+        pass
+
 
 class Genome:
     def __init__(self, genomeName):
@@ -59,6 +64,7 @@ hub = Hub(hubName)  # an object has every attribute of hub
 # get all genomes from specified hub object
 hub.getHubGenomes()
 
+
 # get all genomes from all UCSC Database
 genomesList = Genome.getUCSCGenomes()
 
@@ -74,5 +80,11 @@ trackName = 'affyGnf1h'
 
 track = Track(trackName)  # an object has every attribute of track
 
-
 trackChromosomes = track.getTrackChromosomes(genome)
+
+# list chromosomes from assembly hub genome -
+hub.getChromosomes(genome)
+# list chromosomes from specified track in assembly hub genome -
+# api.genome.ucsc.edu/list/chromosomes?hubUrl=hubUrl=http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt;genome=CAST_EiJ;track=assembly
+# list schema from specified track in UCSC database genome -
+# api.genome.ucsc.edu/list/schema?genome=hg38;track=knownGene
