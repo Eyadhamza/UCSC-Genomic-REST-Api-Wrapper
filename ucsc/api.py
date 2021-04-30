@@ -19,11 +19,29 @@ class Genome:
         # fetch the genome based on name
         # return the genome as an object with all required attributes
         self.genomeName = genomeName
+
     pass
 
     @staticmethod
     def getUCSCGenomes():
         #  api.genome.ucsc.edu/list/ucscGenomes
+        return []
+
+    def getChromosomes(self):
+
+        return []
+
+    def trackList(self):
+        return []
+
+
+class Track:
+    def __init__(self, trackName):
+        # fetch the track based on name
+        # return the track as an object with all required attributes
+        self.trackName = trackName
+
+    def getTrackChromosomes(self):
         return []
 
 
@@ -37,11 +55,19 @@ hub = Hub(hubName)  # an object has every attribute of hub
 # get all genomes from specified hub object
 hub.getHubGenomes()
 
-
 # get all genomes from all UCSC Database
 genomesList = Genome.getUCSCGenomes()
 
 genomeName = 'CAST_EiJ'  # researcher will choose his desired genome based on name
 
-genome = Genome(genomeName) # an object has every attribute of genome
+genome = Genome(genomeName)  # an object has every attribute of genome
 
+chromosomes = genome.getChromosomes()
+
+tracks = genome.trackList()
+
+trackName = 'affyGnf1h'
+
+track = Track(trackName)  # an object has every attribute of track
+
+trackChromosomes = track.getTrackChromosomes()
