@@ -16,12 +16,12 @@ class Hub:
     def getChromosomes(self, genome):
         # api.genome.ucsc.edu/list/chromosomes?hubUrl=http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt;genome=CAST_EiJ
 
-        pass
+        return []
 
     def getTrackChromosomes(self, genome, track):
         # api.genome.ucsc.edu/list/chromosomes?hubUrl=hubUrl=http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt;genome=CAST_EiJ;track=assembly
 
-        pass
+        return []
 
 
 class Genome:
@@ -85,13 +85,19 @@ trackName = 'affyGnf1h'
 
 track = Track(trackName)  # an object has every attribute of track
 
+
+# list chromosomes from specified track in UCSC database genome
 trackChromosomes = track.getTrackChromosomes(genome)
 
+
+# duplication needs to be removed of course ! WARNING
 # list chromosomes from assembly hub genome -
-hub.getChromosomes(genome)
+chromosomes2 = hub.getChromosomes(genome)
 
 
 # list chromosomes from specified track in assembly hub genome -
-hub.getTrackChromosomes(genome, track)
+trackChromosomes2 = hub.getTrackChromosomes(genome, track)
+
+
 # list schema from specified track in UCSC database genome -
 # api.genome.ucsc.edu/list/schema?genome=hg38;track=knownGene
