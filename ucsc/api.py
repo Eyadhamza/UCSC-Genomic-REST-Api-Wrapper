@@ -73,6 +73,7 @@ class Genome:  # eyad
         response = requests.get(BASE_URL + '/list/tracks',{'genome' : self.genomeName}).json()
         myList = []
         for key in response[self.genomeName]:
+
             myList.append(Track(key, **response[self.genomeName][key]))
         return myList
 
@@ -89,9 +90,33 @@ class Genome:  # eyad
 class Track:  # mazen
     def __init__(self, trackName, shortLabel=None, type=None, longLabel=None, itemCount=None,
                  visibility=None, group=None,compositeContainer=None, subGroup1=None,compositeTrack=None,
-                 priority=None, urlLabel=None, url=None, dbSnp153ViewVariants=None,dbSnp153ViewErrs=None):
+                 priority=None, urlLabel=None, url=None, dbSnp153ViewVariants=None,dbSnp153ViewErrs=None,
+                 indelDoubleInsert=None,pennantIcon=None,indelQueryInsert=None,baseColorUseSequence=None,
+                 showCdsAllScales=None,showDiffBasesAllScales=None,color = None,showDiffBasesMaxZoom =None,
+                 showCdsMaxZoom=None,baseColorDefault= None,baseColorUseCds=None,parent=None,html=None,noInherit=None,
+                 bismapBigBed=None,bismapBigWig=None,maxWindowToDraw=None,superTrack=None,caddT=None,**kwargs):
         # fetch the track based on name
         # return the track as an object with all required attributes
+        self.trackName = trackName
+        self.caddT = caddT
+        self.superTrack = superTrack
+        self.maxWindowToDraw = maxWindowToDraw
+        self.bismapBigWig = bismapBigWig
+        self.bismapBigBed = bismapBigBed
+        self.noInherit = noInherit
+        self.html = html
+        self.parent = parent
+        self.baseColorUseCds = baseColorUseCds
+        self.baseColorDefault = baseColorDefault
+        self.showCdsMaxZoom = showCdsMaxZoom
+        self.showDiffBasesMaxZoom = showDiffBasesMaxZoom
+        self.color = color
+        self.showDiffBasesAllScales = showDiffBasesAllScales
+        self.showCdsAllScales = showCdsAllScales
+        self.baseColorUseSequence = baseColorUseSequence
+        self.indelQueryInsert = indelQueryInsert
+        self.pennantIcon = pennantIcon
+        self.indelDoubleInsert = indelDoubleInsert
         self.dbSnp153ViewErrs = dbSnp153ViewErrs
         self.dbSnp153ViewVariants = dbSnp153ViewVariants
         self.url = url
@@ -106,7 +131,6 @@ class Track:  # mazen
         self.longLabel = longLabel
         self.type = type
         self.shortLabel = shortLabel
-        self.trackName = trackName
 
     def createShema(self, genome):
         # api.genome.ucsc.edu/list/schema?genome=hg38;track=knownGene
