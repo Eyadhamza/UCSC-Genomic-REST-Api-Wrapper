@@ -1,4 +1,3 @@
-import json
 
 import requests
 
@@ -28,9 +27,10 @@ class Genome:  # eyad
                  , organism=None, defaultPos=None, active=None,
                  orderKey=None, scientificName=None,
                  htmlPath=None, hgNearOk=None, hgPbOk=None, sourceName=None, taxId=None):
-        self.genomeName = genomeName
         if genome is None:
             Genome.createGenome(genomeName)
+        self.genomeName = genomeName
+
         self.genome = genome
         # call to find genome
         self.taxId = taxId
@@ -75,9 +75,9 @@ class Genome:  # eyad
     def createGenome(genomeName):
         for genome in Genome.getUCSCGenomes():
             if genome.genomeName == genomeName:
+                print('genome found')
                 return genome
-
-        return 'Genome Doesn\'t exists'
+        raise Exception("can't construct genome, Genome does not exist")
 
 
 class Track:  # mazen
