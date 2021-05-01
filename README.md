@@ -21,7 +21,7 @@ Find hub by given attribute, the function will return the result as an object or
 
 Get all genomes from specified hub object
   
-``` hub = Hub.getHubGenomes('ALFA Hub') ``` 
+``` hub = Hub.getGenomes('ALFA Hub') ``` 
 
 
 Get all genomes from all UCSC Database

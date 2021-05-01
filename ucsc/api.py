@@ -4,12 +4,11 @@ BASE_URL = 'http://api.genome.ucsc.edu'
 
 
 class Hub:  # yasmeen
-    hubUrl = ''
 
-    def __init__(self, hubName,**kwargs):
-        self.hubName = hubName
-        self.hubUrl = kwargs.get('hubUrl')
+    def __init__(self,**kwargs):
+
         self.shortLabel = kwargs.get('shortLabel')
+        self.hubUrl = kwargs.get('hubUrl')
         self.longLabel = kwargs.get('longLabel')
         self.registrationTime = kwargs.get('registrationTime')
         self.dbCount = kwargs.get('dbCount')
@@ -18,11 +17,15 @@ class Hub:  # yasmeen
 
 
     @staticmethod
-    def getAllHubs():
-        # call to api.genome.ucsc.edu/list/publicHubs
-        return []
+    def get():
+        response = requests.get(BASE_URL + '/list/publicHubs').json()
+        myList = []
+        for key in response['publicHubs']:
+            myList.append(Hub( **key))
+        return myList
 
-    def getHubGenomes(self):
+
+    def getGenomes(self):
         hubUrl = self.hubUrl
         # call to api.genome.ucsc.edu/list/hubGenomes?hubUrl=http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt
         pass
