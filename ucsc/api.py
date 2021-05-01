@@ -1,4 +1,4 @@
-class Hub:
+class Hub: # yasmeen
     def __init__(self, hubName):
         self.hubUrl = None
         self.hubName = hubName
@@ -14,7 +14,7 @@ class Hub:
         pass
 
 
-class Genome:
+class Genome: # eyad
     def __init__(self, genomeName):
         # fetch the genome based on name
         # return the genome as an object with all required attributes
@@ -31,7 +31,7 @@ class Genome:
         return []
 
 
-class Track:
+class Track: # mazen
     def __init__(self, trackName):
         # fetch the track based on name
         # return the track as an object with all required attributes
@@ -42,7 +42,7 @@ class Track:
         return ''
 
 
-class Chromosome:
+class Chromosome: # salma
     def __init__(self, genome=None, hub=None, track=None):
         # fetch the track based on name
         # return the track as an object with all required attributes
@@ -53,10 +53,11 @@ class Chromosome:
         return []
 
 
-class Sequence:
+class Sequence: # sohaila
     def __init__(self, genome, chromosome, hub=None, track=None, chromStart=None, chromEnd=None):
         # must return the
         self.dna = None
+        #
 
 
 # returns list of available hubs names and url (can be overriding by parameter)
