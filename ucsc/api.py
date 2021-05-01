@@ -26,6 +26,7 @@ class Genome:  # eyad
                  , organism=None, defaultPos=None, active=None,
                  orderKey=None, scientificName=None,
                  htmlPath=None, hgNearOk=None, hgPbOk=None, sourceName=None, taxId=None):
+
         self.genomeName = genomeName
         self.genome = genome
         # call to find genome
@@ -48,7 +49,7 @@ class Genome:  # eyad
     pass
 
     @staticmethod
-    def getUCSCGenomes():
+    def UCSCGenomes():
 
         response = requests.get(BASE_URL + '/list/ucscGenomes').json()
         myList = []
@@ -57,8 +58,8 @@ class Genome:  # eyad
         return myList
 
     @staticmethod
-    def genomeExists(genomeName):
-        for genome in Genome.getUCSCGenomes():
+    def exists(genomeName):
+        for genome in Genome.UCSCGenomes():
             if genome.genomeName == genomeName:
                 return True
 
@@ -71,9 +72,18 @@ class Genome:  # eyad
 
 
     @staticmethod
-    def constructGenome(genomeName):
-        for genome in Genome.getUCSCGenomes():
+    def find(genomeName):
+        for genome in Genome.UCSCGenomes():
             if genome.genomeName == genomeName:
+                print('genome found')
+                return genome
+        raise Exception("can't construct genome, Genome does not exist")
+
+    @staticmethod
+    def findBy(genomeAttribute,value):
+        for genome in Genome.UCSCGenomes():
+
+            if getattr(genome, genomeAttribute) == value:
                 print('genome found')
                 return genome
         raise Exception("can't construct genome, Genome does not exist")
@@ -139,7 +149,7 @@ class Track:  # mazen
 
     @staticmethod
     def constructTrack(trackName):
-        for track in Genome.getUCSCGenomes():
+        for track in Genome.UCSCGenomes():
             if track.trackName == trackName:
                 print('track found')
                 return track

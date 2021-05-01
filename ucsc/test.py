@@ -1,9 +1,10 @@
 from api import Genome
 #
-genome = Genome.constructGenome('nomLeu2')
-print(genome.__dict__)
-for genome in Genome.getUCSCGenomes():
-    print(genome.__dict__)
+myGenome = Genome.findBy('hgPbOk',0)
+
+print(myGenome.__dict__)
+# for genome in Genome.getUCSCGenomes():
+#     print(genome.__dict__)
 
 #
 # print(genome.name)
