@@ -45,9 +45,7 @@ class Genome:  # eyad
         self.nibPath = nibPath
         self.organism = organism
         self.description = description
-        a = '{"name": "Bob", "languages": "English"}'
-        y = json.loads(a)
-        self.name = json.loads(a)['name']
+
         # fetch the genome based on name
         # return the genome as an object with all required attributes
 
