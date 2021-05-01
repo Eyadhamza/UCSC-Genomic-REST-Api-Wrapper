@@ -66,7 +66,7 @@ class Genome:  # eyad
             if genome.genomeName == genomeName:
                 return True
 
-        return 'Genome Doesn\'t exists'
+        return False
 
     def trackList(self):
         return []
