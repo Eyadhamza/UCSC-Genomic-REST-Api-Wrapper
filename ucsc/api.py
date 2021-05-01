@@ -1,4 +1,3 @@
-
 import requests
 
 BASE_URL = 'http://api.genome.ucsc.edu'
@@ -81,9 +80,25 @@ class Genome:  # eyad
 
 
 class Track:  # mazen
-    def __init__(self, trackName):
+    def __init__(self, trackName, shortLabel=None, type=None, longLabel=None, itemCount=None,
+                 visibility=None, group=None,compositeContainer=None, subGroup1=None,compositeTrack=None,
+                 priority=None, urlLabel=None, url=None, dbSnp153ViewVariants=None,dbSnp153ViewErrs=None):
         # fetch the track based on name
         # return the track as an object with all required attributes
+        self.dbSnp153ViewErrs = dbSnp153ViewErrs
+        self.dbSnp153ViewVariants = dbSnp153ViewVariants
+        self.url = url
+        self.urlLabel = urlLabel
+        self.priority = priority
+        self.compositeTrack = compositeTrack
+        self.subGroup1 = subGroup1
+        self.compositeContainer = compositeContainer
+        self.group = group
+        self.visibility = visibility
+        self.itemCount = itemCount
+        self.longLabel = longLabel
+        self.type = type
+        self.shortLabel = shortLabel
         self.trackName = trackName
 
     def createShema(self, genome):
