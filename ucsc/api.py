@@ -21,14 +21,14 @@ class Hub:  # yasmeen
         response = requests.get(BASE_URL + '/list/publicHubs').json()
         myList = []
         for key in response['publicHubs']:
-            myList.append(Hub( **key))
+            myList.append(Hub(**key))
         return myList
 
 
     def getGenomes(self):
-        hubUrl = self.hubUrl
+        return Genome.get(self.hubUrl)
         # call to api.genome.ucsc.edu/list/hubGenomes?hubUrl=http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt
-        pass
+
 
 
 class Genome:  # eyad
@@ -56,12 +56,15 @@ class Genome:  # eyad
     pass
 
     @staticmethod
-    def get():
+    def get(hubUrl=None):
+        genomesRequest = 'ucscGenomes' if hubUrl is None else 'hubGenomes'
 
-        response = requests.get(BASE_URL + '/list/ucscGenomes').json()
+        response = requests.get(BASE_URL + f'/list/{genomesRequest}', {'hubUrl':hubUrl}).json()
         myList = []
-        for key in response['ucscGenomes']:
-            myList.append(Genome(key, **response['ucscGenomes'][key]))
+        genomesResponse = 'ucscGenomes' if hubUrl is None else 'genomes'
+
+        for key in response[genomesResponse]:
+            myList.append(Genome(key, **response[genomesResponse][key]))
         return myList
 
     @staticmethod

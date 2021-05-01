@@ -1,8 +1,9 @@
-from api import Genome, Track, Hub
+from ucsc.api import Genome, Track, Hub
 
 #
-# myTrack = Genome.find('hg38').findTrack('knownGene')
+myGenome = Genome.find('hg38')
 
+print(myGenome.__dict__)
 # myTrack = Track.findBy('hg38','longLabel','ClinGen curation activities (Dosage Sensitivity and Gene-Disease Validity)')
 # # for genome in Genome.getUCSCGenomes():
 for i in Hub.get():
