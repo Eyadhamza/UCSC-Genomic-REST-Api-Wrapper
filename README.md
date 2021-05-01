@@ -131,11 +131,21 @@ from ucsc.api import Track
 ``` 
 Track.exists('hg38','knownGene') 
 ```
+List the schema of specified track from given genome 
 
-  list chromosomes from specified track in UCSC database genome
+``` 
+from ucsc.api import Track 
+```
 
-  list schema from specified track in UCSC database genome
- trackSchema = track.createShema(genome)
+``` 
+track = Track.find('hg38','knownGene') 
+
+trackSchema = track.schema('hg38')
+```
+
+
+
+
 
   only one function to get the list of chromosomes
 

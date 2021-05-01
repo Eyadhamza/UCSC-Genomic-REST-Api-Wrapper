@@ -208,4 +208,3 @@ class Sequence:  # sohaila
     def __init__(self, genome, chromosome, hub=None, track=None, chromStart=None, chromEnd=None):
         # must return the
         self.dna = None
-        #
