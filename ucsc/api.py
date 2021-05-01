@@ -68,12 +68,13 @@ class Genome:  # eyad
 
         return False
 
+    @property
     def tracks(self):
-        payload = {'genome' : self.genomeName}
-        response = requests.get(BASE_URL + '/list/tracks').json()
+
+        response = requests.get(BASE_URL + '/list/tracks',{'genome' : self.genomeName}).json()
         myList = []
         for key in response[self.genomeName]:
-            myList.append(Track(key, **response['ucscGenomes'][key]))
+            myList.append(Track(key, **response[self.genomeName][key]))
         return myList
 
 
