@@ -6,9 +6,16 @@ BASE_URL = 'http://api.genome.ucsc.edu'
 class Hub:  # yasmeen
     hubUrl = ''
 
-    def __init__(self, hubName):
-        self.hubUrl = None
+    def __init__(self, hubName,**kwargs):
         self.hubName = hubName
+        self.hubUrl = kwargs.get('hubUrl')
+        self.shortLabel = kwargs.get('shortLabel')
+        self.longLabel = kwargs.get('longLabel')
+        self.registrationTime = kwargs.get('registrationTime')
+        self.dbCount = kwargs.get('dbCount')
+        self.dbList = kwargs.get('dbList')
+        self.descriptionUrl = kwargs.get('descriptionUrl')
+
 
     @staticmethod
     def getAllHubs():
@@ -22,26 +29,23 @@ class Hub:  # yasmeen
 
 
 class Genome:  # eyad
-    def __init__(self, genomeName, genome=None, description=None, nibPath=None
-                 , organism=None, defaultPos=None, active=None,
-                 orderKey=None, scientificName=None,
-                 htmlPath=None, hgNearOk=None, hgPbOk=None, sourceName=None, taxId=None):
+    def __init__(self, genomeName, **kwargs):
 
         self.genomeName = genomeName
-        self.genome = genome
+        self.genome = kwargs.get('genome')
         # call to find genome
-        self.taxId = taxId
-        self.sourceName = sourceName
-        self.hgPbOk = hgPbOk
-        self.hgNearOk = hgNearOk
-        self.htmlPath = htmlPath
-        self.scientificName = scientificName
-        self.orderKey = orderKey
-        self.active = active
-        self.defaultPos = defaultPos
-        self.nibPath = nibPath
-        self.organism = organism
-        self.description = description
+        self.taxId = kwargs.get('taxId')
+        self.sourceName = kwargs.get('sourceName')
+        self.hgPbOk = kwargs.get('hgPbOk')
+        self.hgNearOk = kwargs.get('hgNearOk')
+        self.htmlPath = kwargs.get('htmlPath')
+        self.scientificName = kwargs.get('scientificName')
+        self.orderKey = kwargs.get('orderKey')
+        self.active = kwargs.get('active')
+        self.defaultPos = kwargs.get('defaultPos')
+        self.nibPath = kwargs.get('nibPath')
+        self.organism = kwargs.get('organism')
+        self.description = kwargs.get('description')
 
         # fetch the genome based on name
         # return the genome as an object with all required attributes

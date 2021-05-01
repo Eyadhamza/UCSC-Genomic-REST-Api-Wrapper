@@ -1,6 +1,7 @@
 # UCSC-Genomic-REST-Api-Wrapper
 An open-source python package licensed under the MIT license, the package represents a python Api wrapper on the UCSC genomic database, which makes it much easier for researchers to access and query the database with an elegant and human readable Api
 
+[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 
 ## Documentation 
 
@@ -35,8 +36,11 @@ Find genome by name, the function will return the result as an object or throws 
 
 Find genome by given attribute, the function will return the result as an object or throws a not found exception
 
-``` genome = Genome.find('genomeName','ALFA Genome') ```
+``` genome = Genome.findBy('genomeName','ALFA Genome') ```
 
+Check if genome exists in a UCSC database
+
+``` Genome.exists('hg38') ```
 
 List the available tracks of the genome object
 
@@ -50,6 +54,10 @@ Find a specific track in a genome by name, the return type is an object of track
 Find a specific track using a specific attribute, the return type is an object of track
 
 ``` track = Track.findBy('hg38','longLabel','ClinGen curation ') ```
+
+Check if track exists in a genome
+
+``` Track.exists('hg38','knownGene') ```
 
   list chromosomes from specified track in UCSC database genome
 
