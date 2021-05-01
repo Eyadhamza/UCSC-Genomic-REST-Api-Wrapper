@@ -160,7 +160,7 @@ class Track:  # mazen
                 return track
         raise Exception("can't find track, Genome does not exist")
 
-        # api.genome.ucsc.edu/list/?genome=hg38;
+
 
     def schema(self, genomeName):
         return Schema.get(genomeName, self.trackName)
@@ -199,54 +199,3 @@ class Sequence:  # sohaila
         # must return the
         self.dna = None
         #
-
-# # returns list of available hubs names and url (can be overriding by parameter)
-# hubList = Hub.getAllHubs()
-#
-# hubName = 'ALFA Hub'  # researcher will choose his desired hub based on short label
-#
-# hub = Hub(hubName)  # an object has every attribute of hub
-#
-# # get all genomes from specified hub object
-# hub.getHubGenomes()
-#
-# # get all genomes from all UCSC Database
-# genomesList = Genome.getget()
-#
-# genomeName = 'CAST_EiJ'  # researcher will choose his desired genome based on name
-#
-# genome = Genome(genomeName)  # an object has every attribute of genome
-#
-# tracks = genome.trackList()
-#
-# trackName = 'affyGnf1h'
-#
-# track = Track(trackName)  # an object has every attribute of track
-#
-# # list chromosomes from specified track in UCSC database genome
-#
-# # list schema from specified track in UCSC database genome
-# trackSchema = track.createShema(genome)
-#
-# # only one function to get the list of chromosomes
-#
-# # list chromosomes from UCSC database genome then hub and track = None
-# chromosomes1 = Chromosome.getChromosomes(genome)
-#
-# # list chromosomes from specified track in UCSC database genome
-# chromosomes2 = Chromosome.getChromosomes(genome, track=track)
-#
-# # list chromosomes from assembly hub genome
-# chromosomes3 = Chromosome.getChromosomes(genome, hub)
-#
-# # list chromosomes from specified track in assembly hub genome
-# chromosomes4 = Chromosome.getChromosomes(genome, hub, track)
-#
-# chromosome = Chromosome(genome)
-#
-# chromStart = 123
-# chromEnd = 543
-#
-# sequence = Sequence(hub, genome, track, chromosome, chromStart, chromEnd)
-#
-# # sequence.dna
