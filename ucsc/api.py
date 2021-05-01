@@ -24,11 +24,13 @@ class Hub:  # yasmeen
 
 
 class Genome:  # eyad
-    def __init__(self, genomeName, genome, description=None, nibPath=None
+    def __init__(self, genomeName, genome=None, description=None, nibPath=None
                  , organism=None, defaultPos=None, active=None,
                  orderKey=None, scientificName=None,
                  htmlPath=None, hgNearOk=None, hgPbOk=None, sourceName=None, taxId=None):
         self.genomeName = genomeName
+        if genome is None:
+            Genome.createGenome(genomeName)
         self.genome = genome
         # call to find genome
         self.taxId = taxId
@@ -66,10 +68,18 @@ class Genome:  # eyad
             if genome.genomeName == genomeName:
                 return True
 
-            return 'Genome Doesn\'t exists'
+        return 'Genome Doesn\'t exists'
 
     def trackList(self):
         return []
+
+    @staticmethod
+    def createGenome(genomeName):
+        for genome in Genome.getUCSCGenomes():
+            if genome.genomeName == genomeName:
+                return genome
+
+        return 'Genome Doesn\'t exists'
 
 
 class Track:  # mazen
