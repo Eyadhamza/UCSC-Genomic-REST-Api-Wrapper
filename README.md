@@ -7,54 +7,84 @@ An open-source python package licensed under the MIT license, the package repres
 
  list of available hubs as python objects 
 
-``` from ucsc.api import Hub  ```
+``` 
+from ucsc.api import Hub  
+```
 
-``` hubList = Hub.get() ```
+``` 
+hubList = Hub.get() 
+```
 
 
 Find hub by name, the function will return the result as an object or throws a not found exception
 
-``` from ucsc.api import Hub  ```
+``` 
+from ucsc.api import Hub  
+```
 
-``` hub = Hub.find('ALFA Hub') ```  
+``` 
+hub = Hub.find('ALFA Hub') 
+```  
 
 Find hub by given attribute, the function will return the result as an object or throws a not found exception
 
-``` from ucsc.api import Hub  ```
+``` 
+from ucsc.api import Hub  
+```
 
-``` hub = Hub.find('hubName','ALFA Hub') ```
+``` 
+hub = Hub.find('hubName','ALFA Hub') 
+```
 
 
 Get all genomes from specified hub object
   
-``` from ucsc.api import Hub  ```
+``` 
+from ucsc.api import Hub  
+```
 
-``` hub = Hub.getGenomes('ALFA Hub') ``` 
+``` 
+hub = Hub.getGenomes('ALFA Hub') 
+``` 
 
 
 Get all genomes from all UCSC Database
 
-``` from ucsc.api import Genome ```
+``` 
+from ucsc.api import Genome 
+```
 
-```  genomesList = Genome.get() ```
+```  
+genomesList = Genome.get() 
+```
 
 
 
 Find genome by name, the function will return the result as an object or throws a not found exception
 
-``` from ucsc.api import Genome ```
+``` 
+from ucsc.api import Genome 
+```
 
-``` genome = Genome.find('ALFA Genome') ```  
+``` 
+genome = Genome.find('ALFA Genome') 
+```  
 
 Find genome by given attribute, the function will return the result as an object or throws a not found exception
 
-``` from ucsc.api import Genome  ```
+``` 
+from ucsc.api import Genome  
+```
 
-``` genome = Genome.findBy('genomeName','ALFA Genome') ```
+``` 
+genome = Genome.findBy('genomeName','ALFA Genome') 
+```
 
 Check if genome exists in a UCSC database
 
-``` from ucsc.api import Genome ```
+``` 
+from ucsc.api import Genome
+ ```
 
 ```
  Genome.exists('hg38') 
@@ -62,7 +92,9 @@ Check if genome exists in a UCSC database
 
 List the available tracks of the genome object
 
-``` from ucsc.api import Genome ```
+``` 
+from ucsc.api import Genome 
+```
 
 ``` 
 genome = Genome.find('ALFA Genome') 
@@ -72,21 +104,33 @@ tracks = genome.tracks
  
 Find a specific track in a genome by name, the return type is an object of track
 
-``` from ucsc.api import Track ```
+``` 
+from ucsc.api import Track 
+```
 
-``` track = Track.find('hg38','knownGene') ```
+``` 
+track = Track.find('hg38','knownGene') 
+```
 
 Find a specific track using a specific attribute, the return type is an object of track
 
-``` from ucsc.api import Track ```
+``` 
+from ucsc.api import Track
+ ```
 
-``` track = Track.findBy('hg38','longLabel','ClinGen curation ') ```
+``` 
+track = Track.findBy('hg38','longLabel','ClinGen curation ') 
+```
 
 Check if track exists in a genome
 
-``` from ucsc.api import Track ```
+``` 
+from ucsc.api import Track 
+```
 
-``` Track.exists('hg38','knownGene') ```
+``` 
+Track.exists('hg38','knownGene') 
+```
 
   list chromosomes from specified track in UCSC database genome
 
