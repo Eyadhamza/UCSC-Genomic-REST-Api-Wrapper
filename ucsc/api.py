@@ -136,6 +136,14 @@ class Track:  # mazen
         # api.genome.ucsc.edu/list/schema?genome=hg38;track=knownGene
         return ''
 
+    @staticmethod
+    def constructTrack(trackName):
+        for track in Genome.getUCSCGenomes():
+            if track.trackName == trackName:
+                print('track found')
+                return track
+        raise Exception("can't construct track, Genome does not exist")
+
 
 class Chromosome:  # salma
     def __init__(self, trackName=None, hub=None, track=None):
