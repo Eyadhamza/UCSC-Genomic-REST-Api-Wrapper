@@ -1,4 +1,9 @@
-class Hub: # yasmeen
+import json
+
+
+class Hub:  # yasmeen
+    hubUrl = ''
+
     def __init__(self, hubName):
         self.hubUrl = None
         self.hubName = hubName
@@ -14,8 +19,26 @@ class Hub: # yasmeen
         pass
 
 
-class Genome: # eyad
-    def __init__(self, genomeName):
+class Genome:  # eyad
+    def __init__(self, genomeName, description=None, nibPath=None
+                 , organism=None, defaultPos=None, active=None,
+                 orderKey=None, scientificName=None,
+                 htmlPath=None, hgNearOk=None, hgPbOk=None, sourceName=None, taxId=None):
+        self.taxId = taxId
+        self.sourceName = sourceName
+        self.hgPbOk = hgPbOk
+        self.hgNearOk = hgNearOk
+        self.htmlPath = htmlPath
+        self.scientificName = scientificName
+        self.orderKey = orderKey
+        self.active = active
+        self.defaultPos = defaultPos
+        self.nibPath = nibPath
+        self.organism = organism
+        self.description = description
+        a = '{"name": "Bob", "languages": "English"}'
+        y = json.loads(a)
+        self.name = json.loads(a)['name']
         # fetch the genome based on name
         # return the genome as an object with all required attributes
         self.genomeName = genomeName
@@ -31,7 +54,7 @@ class Genome: # eyad
         return []
 
 
-class Track: # mazen
+class Track:  # mazen
     def __init__(self, trackName):
         # fetch the track based on name
         # return the track as an object with all required attributes
@@ -42,7 +65,7 @@ class Track: # mazen
         return ''
 
 
-class Chromosome: # salma
+class Chromosome:  # salma
     def __init__(self, genome=None, hub=None, track=None):
         # fetch the track based on name
         # return the track as an object with all required attributes
@@ -53,7 +76,7 @@ class Chromosome: # salma
         return []
 
 
-class Sequence: # sohaila
+class Sequence:  # sohaila
     def __init__(self, genome, chromosome, hub=None, track=None, chromStart=None, chromEnd=None):
         # must return the
         self.dna = None
