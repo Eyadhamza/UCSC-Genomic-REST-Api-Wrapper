@@ -77,16 +77,15 @@ class Genome:  # eyad
             if genome.genomeName == genomeName:
                 print('genome found')
                 return genome
-        raise Exception("can't construct genome, Genome does not exist")
+        raise Exception("can't find genome, Genome does not exist")
 
     @staticmethod
     def findBy(genomeAttribute,value):
         for genome in Genome.UCSCGenomes():
-
-            if getattr(genome, genomeAttribute) == value:
+            if getattr(genome,genomeAttribute) == value:
                 print('genome found')
                 return genome
-        raise Exception("can't construct genome, Genome does not exist")
+        raise Exception("can't find genome, Genome does not exist")
 
 
 class Track:  # mazen

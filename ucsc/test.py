@@ -1,10 +1,10 @@
 from api import Genome
 #
-myGenome = Genome.findBy('hgPbOk',0)
+myGenome = Genome.findBy('hgPbOk',111111111111111110)
 
-print(myGenome.__dict__)
+
 # for genome in Genome.getUCSCGenomes():
-#     print(genome.__dict__)
+print(myGenome.__dict__)
 
 #
 # print(genome.name)
@@ -15,3 +15,12 @@ print(myGenome.__dict__)
 #     print(i.__dict__)
 
 
+# @staticmethod
+#     def findBy(genomeAttribute,value):
+#         myList = []
+#         for genome in Genome.UCSCGenomes():
+#
+#             if getattr(genome, genomeAttribute) == value:
+#                 print('genome found')
+#                 myList.append(genome)
+#         return myList
