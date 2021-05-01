@@ -69,9 +69,8 @@ class Genome:  # eyad
     def tracks(self):
         return Track.get(self.genomeName)
 
-    def findTrack(self,trackName):
-        return Track.find(self.genomeName,trackName)
-
+    def findTrack(self, trackName):
+        return Track.find(self.genomeName, trackName)
 
     @staticmethod
     def find(genomeName):
@@ -82,61 +81,55 @@ class Genome:  # eyad
         raise Exception("can't find genome, Genome does not exist")
 
     @staticmethod
-    def findBy(genomeAttribute,value):
+    def findBy(genomeAttribute, value):
         for genome in Genome.get():
-            if getattr(genome,genomeAttribute) == value:
+            if getattr(genome, genomeAttribute) == value:
                 print('genome found')
                 return genome
         raise Exception("can't find genome, Genome does not exist")
 
 
 class Track:  # mazen
-    def __init__(self, trackName, shortLabel=None, type=None, longLabel=None, itemCount=None,
-                 visibility=None, group=None,compositeContainer=None, subGroup1=None,compositeTrack=None,
-                 priority=None, urlLabel=None, url=None, dbSnp153ViewVariants=None,dbSnp153ViewErrs=None,
-                 indelDoubleInsert=None,pennantIcon=None,indelQueryInsert=None,baseColorUseSequence=None,
-                 showCdsAllScales=None,showDiffBasesAllScales=None,color = None,showDiffBasesMaxZoom =None,
-                 showCdsMaxZoom=None,baseColorDefault= None,baseColorUseCds=None,parent=None,html=None,noInherit=None,
-                 bismapBigBed=None,bismapBigWig=None,maxWindowToDraw=None,superTrack=None,caddT=None,**kwargs):
+    def __init__(self,trackName, **kwargs):
         # fetch the track based on name
         # return the track as an object with all required attributes
         self.trackName = trackName
-        self.caddT = caddT
-        self.superTrack = superTrack
-        self.maxWindowToDraw = maxWindowToDraw
-        self.bismapBigWig = bismapBigWig
-        self.bismapBigBed = bismapBigBed
-        self.noInherit = noInherit
-        self.html = html
-        self.parent = parent
-        self.baseColorUseCds = baseColorUseCds
-        self.baseColorDefault = baseColorDefault
-        self.showCdsMaxZoom = showCdsMaxZoom
-        self.showDiffBasesMaxZoom = showDiffBasesMaxZoom
-        self.color = color
-        self.showDiffBasesAllScales = showDiffBasesAllScales
-        self.showCdsAllScales = showCdsAllScales
-        self.baseColorUseSequence = baseColorUseSequence
-        self.indelQueryInsert = indelQueryInsert
-        self.pennantIcon = pennantIcon
-        self.indelDoubleInsert = indelDoubleInsert
-        self.dbSnp153ViewErrs = dbSnp153ViewErrs
-        self.dbSnp153ViewVariants = dbSnp153ViewVariants
-        self.url = url
-        self.urlLabel = urlLabel
-        self.priority = priority
-        self.compositeTrack = compositeTrack
-        self.subGroup1 = subGroup1
-        self.compositeContainer = compositeContainer
-        self.group = group
-        self.visibility = visibility
-        self.itemCount = itemCount
-        self.longLabel = longLabel
-        self.type = type
-        self.shortLabel = shortLabel
+        self.caddT = kwargs.get('caddT')
+        self.superTrack = kwargs.get('superTrack')
+        self.maxWindowToDraw = kwargs.get('maxWindowToDraw')
+        self.bismapBigWig = kwargs.get('bismapBigWig')
+        self.bismapBigBed = kwargs.get('bismapBigBed')
+        self.noInherit = kwargs.get('noInherit')
+        self.html = kwargs.get('html')
+        self.parent = kwargs.get('parent')
+        self.baseColorUseCds = kwargs.get('baseColorUseCds')
+        self.baseColorDefault = kwargs.get('baseColorDefault')
+        self.showCdsMaxZoom = kwargs.get('showCdsMaxZoom')
+        self.showDiffBasesMaxZoom = kwargs.get('showDiffBasesMaxZoom')
+        self.color = kwargs.get('color')
+        self.showDiffBasesAllScales = kwargs.get('showDiffBasesAllScales')
+        self.showCdsAllScales = kwargs.get('showCdsAllScales')
+        self.baseColorUseSequence = kwargs.get('baseColorUseSequence')
+        self.indelQueryInsert = kwargs.get('indelQueryInsert')
+        self.pennantIcon = kwargs.get('pennantIcon')
+        self.indelDoubleInsert = kwargs.get('indelDoubleInsert')
+        self.dbSnp153ViewErrs = kwargs.get('dbSnp153ViewErrs')
+        self.dbSnp153ViewVariants = kwargs.get('dbSnp153ViewVariants')
+        self.url = kwargs.get('url')
+        self.urlLabel = kwargs.get('urlLabel')
+        self.priority = kwargs.get('priority')
+        self.compositeTrack = kwargs.get('compositeTrack')
+        self.subGroup1 = kwargs.get('subGroup1')
+        self.compositeContainer = kwargs.get('compositeContainer')
+        self.group = kwargs.get('group')
+        self.visibility = kwargs.get('visibility')
+        self.itemCount = kwargs.get('itemCount')
+        self.longLabel = kwargs.get('longLabel')
+        self.type = kwargs.get('type')
+        self.shortLabel = kwargs.get('shortLabel')
 
     @staticmethod
-    def exists(genomeName,trackName):
+    def exists(genomeName, trackName):
         for track in Track.get(genomeName):
             if track.trackName == trackName:
                 return True
@@ -156,22 +149,38 @@ class Track:  # mazen
     def find(genomeName, trackName):
         for track in Track.get(genomeName):
             if track.trackName == trackName:
-                print('track found')
                 return track
         raise Exception("can't find track, Track does not exist")
 
     @staticmethod
-    def findBy(genomeName,trackAttribute, value):
+    def findBy(genomeName, trackAttribute, value):
         for track in Track.get(genomeName):
             if getattr(track, trackAttribute) == value:
                 print('track found')
                 return track
         raise Exception("can't find track, Genome does not exist")
 
+        # api.genome.ucsc.edu/list/?genome=hg38;
 
-    def createShema(self, genome):
-        # api.genome.ucsc.edu/list/schema?genome=hg38;track=knownGene
-        return ''
+    def schema(self, genomeName):
+        return Schema.get(genomeName, self.trackName)
+
+
+class Schema:
+    def __init__(self, **kwargs):
+        self.name = kwargs['name'],
+        self.sqlType = kwargs['sqlType'],
+        self.jsonType = kwargs['jsonType']
+        self.description = kwargs['description']
+
+    @staticmethod
+    def get(genomeName, trackName):
+        response = requests.get(BASE_URL + '/list/schema', {'genome': genomeName, 'track': trackName}).json()
+        myList = []
+
+        for key in response['columnTypes']:
+            myList.append(Schema(**key))
+        return myList
 
 
 class Chromosome:  # salma
