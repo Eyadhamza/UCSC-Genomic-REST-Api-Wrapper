@@ -49,7 +49,7 @@ class Genome:  # eyad
     pass
 
     @staticmethod
-    def UCSCGenomes():
+    def get():
 
         response = requests.get(BASE_URL + '/list/ucscGenomes').json()
         myList = []
@@ -59,7 +59,7 @@ class Genome:  # eyad
 
     @staticmethod
     def exists(genomeName):
-        for genome in Genome.UCSCGenomes():
+        for genome in Genome.get():
             if genome.genomeName == genomeName:
                 return True
 
@@ -67,13 +67,15 @@ class Genome:  # eyad
 
     @property
     def tracks(self):
-        return Track.getTracks(self.genomeName)
+        return Track.get(self.genomeName)
 
+    def findTrack(self,trackName):
+        return Track.find(self.genomeName,trackName)
 
 
     @staticmethod
     def find(genomeName):
-        for genome in Genome.UCSCGenomes():
+        for genome in Genome.get():
             if genome.genomeName == genomeName:
                 print('genome found')
                 return genome
@@ -81,7 +83,7 @@ class Genome:  # eyad
 
     @staticmethod
     def findBy(genomeAttribute,value):
-        for genome in Genome.UCSCGenomes():
+        for genome in Genome.get():
             if getattr(genome,genomeAttribute) == value:
                 print('genome found')
                 return genome
@@ -134,7 +136,15 @@ class Track:  # mazen
         self.shortLabel = shortLabel
 
     @staticmethod
-    def getTracks(genomeName):
+    def exists(genomeName,trackName):
+        for track in Track.get(genomeName):
+            if track.trackName == trackName:
+                return True
+
+        return False
+
+    @staticmethod
+    def get(genomeName):
 
         response = requests.get(BASE_URL + '/list/tracks', {'genome': genomeName}).json()
         myList = []
@@ -142,17 +152,26 @@ class Track:  # mazen
             myList.append(Track(key, **response[genomeName][key]))
         return myList
 
-    def createShema(self, genome):
-        # api.genome.ucsc.edu/list/schema?genome=hg38;track=knownGene
-        return ''
-
     @staticmethod
-    def constructTrack(trackName):
-        for track in Genome.UCSCGenomes():
+    def find(genomeName, trackName):
+        for track in Track.get(genomeName):
             if track.trackName == trackName:
                 print('track found')
                 return track
-        raise Exception("can't construct track, Genome does not exist")
+        raise Exception("can't find track, Track does not exist")
+
+    @staticmethod
+    def findBy(genomeName,trackAttribute, value):
+        for track in Track.get(genomeName):
+            if getattr(track, trackAttribute) == value:
+                print('track found')
+                return track
+        raise Exception("can't find track, Genome does not exist")
+
+
+    def createShema(self, genome):
+        # api.genome.ucsc.edu/list/schema?genome=hg38;track=knownGene
+        return ''
 
 
 class Chromosome:  # salma
@@ -183,7 +202,7 @@ class Sequence:  # sohaila
 # hub.getHubGenomes()
 #
 # # get all genomes from all UCSC Database
-# genomesList = Genome.getUCSCGenomes()
+# genomesList = Genome.getget()
 #
 # genomeName = 'CAST_EiJ'  # researcher will choose his desired genome based on name
 #

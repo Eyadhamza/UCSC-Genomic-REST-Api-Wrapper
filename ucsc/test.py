@@ -1,10 +1,12 @@
-from api import Genome
+from api import Genome, Track
+
 #
-myGenome = Genome.findBy('hgPbOk',111111111111111110)
+myGenome = Genome.findBy('genomeName','hg38')
 
-
+# myTrack = Track.findBy('hg38','longLabel','ClinGen curation activities (Dosage Sensitivity and Gene-Disease Validity)')
 # for genome in Genome.getUCSCGenomes():
-print(myGenome.__dict__)
+print(myGenome.findTrack('clinGenComp').__dict__)
+# print(myGenome.tracks)
 
 #
 # print(genome.name)
