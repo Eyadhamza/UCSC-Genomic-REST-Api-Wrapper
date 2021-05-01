@@ -43,10 +43,13 @@ List the available tracks of the genome object
 ``` tracks = genome.tracks ```
 
  
+Find a specific track in a genome by name, the return type is an object of track
 
- trackName = 'affyGnf1h'
+``` track = Track.find('hg38','knownGene') ```
 
- track = Track(trackName)   an object has every attribute of track
+Find a specific track using a specific attribute, the return type is an object of track
+
+``` track = Track.findBy('hg38','longLabel','ClinGen curation ') ```
 
   list chromosomes from specified track in UCSC database genome
 
