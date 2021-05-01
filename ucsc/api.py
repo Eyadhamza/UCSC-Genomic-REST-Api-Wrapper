@@ -1,5 +1,7 @@
 import json
 
+BASE_URL = 'api.genome.ucsc.edu'
+
 
 class Hub:  # yasmeen
     hubUrl = ''
@@ -24,6 +26,8 @@ class Genome:  # eyad
                  , organism=None, defaultPos=None, active=None,
                  orderKey=None, scientificName=None,
                  htmlPath=None, hgNearOk=None, hgPbOk=None, sourceName=None, taxId=None):
+        self.genomeName = genomeName
+        # call to find genome
         self.taxId = taxId
         self.sourceName = sourceName
         self.hgPbOk = hgPbOk
@@ -41,7 +45,6 @@ class Genome:  # eyad
         self.name = json.loads(a)['name']
         # fetch the genome based on name
         # return the genome as an object with all required attributes
-        self.genomeName = genomeName
 
     pass
 
