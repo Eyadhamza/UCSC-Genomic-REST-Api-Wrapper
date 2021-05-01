@@ -26,10 +26,7 @@ class Genome:  # eyad
                  , organism=None, defaultPos=None, active=None,
                  orderKey=None, scientificName=None,
                  htmlPath=None, hgNearOk=None, hgPbOk=None, sourceName=None, taxId=None):
-        if genome is None:
-            Genome.createGenome(genomeName)
         self.genomeName = genomeName
-
         self.genome = genome
         # call to find genome
         self.taxId = taxId
@@ -69,17 +66,12 @@ class Genome:  # eyad
 
     @property
     def tracks(self):
+        return Track.getTracks(self.genomeName)
 
-        response = requests.get(BASE_URL + '/list/tracks',{'genome' : self.genomeName}).json()
-        myList = []
-        for key in response[self.genomeName]:
-
-            myList.append(Track(key, **response[self.genomeName][key]))
-        return myList
 
 
     @staticmethod
-    def createGenome(genomeName):
+    def constructGenome(genomeName):
         for genome in Genome.getUCSCGenomes():
             if genome.genomeName == genomeName:
                 print('genome found')
@@ -131,6 +123,15 @@ class Track:  # mazen
         self.longLabel = longLabel
         self.type = type
         self.shortLabel = shortLabel
+
+    @staticmethod
+    def getTracks(genomeName):
+
+        response = requests.get(BASE_URL + '/list/tracks', {'genome': genomeName}).json()
+        myList = []
+        for key in response[genomeName]:
+            myList.append(Track(key, **response[genomeName][key]))
+        return myList
 
     def createShema(self, genome):
         # api.genome.ucsc.edu/list/schema?genome=hg38;track=knownGene
