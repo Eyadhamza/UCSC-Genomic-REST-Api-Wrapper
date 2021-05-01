@@ -24,11 +24,11 @@ class Hub:  # yasmeen
 
 
 class Genome:  # eyad
-    def __init__(self,genomeName, genome, description=None, nibPath=None
+    def __init__(self, genomeName, genome, description=None, nibPath=None
                  , organism=None, defaultPos=None, active=None,
                  orderKey=None, scientificName=None,
                  htmlPath=None, hgNearOk=None, hgPbOk=None, sourceName=None, taxId=None):
-        self.genomeName=genomeName
+        self.genomeName = genomeName
         self.genome = genome
         # call to find genome
         self.taxId = taxId
@@ -53,14 +53,20 @@ class Genome:  # eyad
 
     @staticmethod
     def getUCSCGenomes():
-        #
+
         response = requests.get(BASE_URL + '/list/ucscGenomes').json()
         myList = []
         for key in response['ucscGenomes']:
-            myList.append(Genome(key ,**response['ucscGenomes'][key]))
+            myList.append(Genome(key, **response['ucscGenomes'][key]))
         return myList
 
+    @staticmethod
+    def genomeExists(genomeName):
+        for genome in Genome.getUCSCGenomes():
+            if genome.genomeName == genomeName:
+                return True
 
+            return 'Genome Doesn\'t exists'
 
     def trackList(self):
         return []
