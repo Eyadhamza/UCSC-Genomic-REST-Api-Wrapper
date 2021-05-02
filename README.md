@@ -5,11 +5,9 @@ An open-source python package licensed under the MIT license, the package repres
 
 ## About The Package
 
-[Proposal](https://github.com/Eyadhamza/UCSC-Genomic-REST-Api-Wrapper/blob/main/UCSC%20Genomic%20REST%20Api%20Wrapper.pdf)
+[Project Proposal](https://github.com/Eyadhamza/UCSC-Genomic-REST-Api-Wrapper/blob/main/UCSC%20Genomic%20REST%20Api%20Wrapper.pdf)
 
-## Documentation 
-
-Below you will find the api wrapper details:
+## Documentation
 
 ### Quick Introduction for busy developers
 There are 6 primary classes in the package:
@@ -28,14 +26,15 @@ exists : Check to see if an object exists
 
 Then you can access the attributes of the object using . notation
 
+## Usage guide
 
 List of available hubs as python objects 
 
-```python
+``` python
 from ucsc.api import Hub  
 ```
 
-```python
+``` python
 hubList = Hub.get()
 ```
 
