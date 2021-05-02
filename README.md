@@ -20,6 +20,14 @@ An open-source python package licensed under the MIT license, the package repres
 
 -  No boilerplate  
 
+## Installation 
+
+Install ucsc with pip
+
+```bash 
+  pip install ucsc
+```
+
 ## Documentation
 
 ### Quick Introduction for busy developers
@@ -53,13 +61,7 @@ className.attributeName # Returns attribute name
 ```
 
 
-## Installation 
 
-Install ucsc with pip
-
-```bash 
-  pip install ucsc
-```
     
 
 ## Usage guide
