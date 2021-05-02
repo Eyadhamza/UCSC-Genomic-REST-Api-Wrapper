@@ -173,10 +173,10 @@ class Track:  # mazen
 
 
     def schema(self, genomeName):
-        return Schema.get(genomeName, self.trackName)
+        return TrackSchema.get(genomeName, self.trackName)
 
 
-class Schema:
+class TrackSchema:
     def __init__(self, **kwargs):
         self.name = kwargs['name'],
         self.sqlType = kwargs['sqlType'],
@@ -189,7 +189,7 @@ class Schema:
         myList = []
 
         for key in response['columnTypes']:
-            myList.append(Schema(**key))
+            myList.append(TrackSchema(**key))
         return myList
 
 

@@ -5,7 +5,27 @@ An open-source python package licensed under the MIT license, the package repres
 
 ## Documentation 
 
- list of available hubs as python objects 
+Below you will find the api wrapper details:
+
+### Quick Introduction for busy developers
+There are 6 primary classes in the package:
+
+Hub, Genome, Track, TrackSchema, Chromosome, Sequence
+
+Each class has the following primary method:
+
+get : returns list of objects of the class
+
+find : Find object by name
+
+findBy : Find object by a specified attribute
+
+exists : Check to see if an object exists
+
+Then you can access the attributes of the object using . notation
+
+
+List of available hubs as python objects 
 
 ``` 
 from ucsc.api import Hub  
@@ -160,7 +180,6 @@ from ucsc.api import Chromosome
 ```
 
 ```
-
 chromosomes = Chromosome.get('hg38', 'knownGene')
 
 # or
@@ -169,19 +188,48 @@ genome = Genome.find('ALFA Genome')
 chromosomes = Chromosome.get(genome, track)
 ```
 
-chromosomes2 = Chromosome.getChromosomes(genome, track=track)
 
-  list chromosomes from assembly hub genome
- chromosomes3 = Chromosome.getChromosomes(genome, hub)
+List chromosomes from assembly hub genome
 
-  list chromosomes from specified track in assembly hub genome
- chromosomes4 = Chromosome.getChromosomes(genome, hub, track)
+``` 
+from ucsc.api import Chromosome 
+```
 
- chromosome = Chromosome(genome)
+```
+chromosomes = Chromosome.get('hg38', 'ALFA Hub')
+```
 
- chromStart = 123
- chromEnd = 543
+List chromosomes from specified track in assembly hub genome
 
- sequence = Sequence(hub, genome, track, chromosome, chromStart, chromEnd)
+``` 
+from ucsc.api import Chromosome 
+```
 
-  sequence.dna
+```
+chromosomes = Chromosome.get('hg38', 'ALFA Hub','knownGene')
+```
+
+Find Specific chromosome
+``` 
+from ucsc.api import Chromosome 
+```
+
+```
+chromosome = Chromosome.find(genome)
+```
+
+
+Find DNA sequence
+``` 
+from ucsc.api import Sequence 
+```
+
+```
+chromStart = 123
+chromEnd = 543
+
+sequence = Sequence.find('hg38', 'ALFA Hub','knownGene', 'Chrm', chromStart, chromEnd)
+# this will return a sequence object, you can then access the sequence data using :
+print(sequence.dna)
+```
+
