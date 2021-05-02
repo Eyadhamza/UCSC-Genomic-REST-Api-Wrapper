@@ -171,6 +171,16 @@ from ucsc.api import Track
 
 ``` python
 track = Track.find('hg38','knownGene') 
+
+```
+Or using a Genome object
+
+``` python
+from ucsc.api import Genome 
+```
+
+``` python 
+genome.findTrack('knownGene')
 ```
 
 Find a specific track using a specific attribute, the return type is an object of track
@@ -183,6 +193,16 @@ from ucsc.api import Track
 track = Track.findBy('hg38','longLabel','ClinGen curation ') 
 ```
 
+Or using a Genome object
+
+``` python
+from ucsc.api import Genome 
+```
+
+``` python 
+genome.findTrackBy('longLabel','knownGene')
+```
+
 Check if track exists in a genome
 
 ``` python
@@ -192,6 +212,17 @@ from ucsc.api import Track
 ``` python
 Track.exists('hg38','knownGene') 
 ```
+
+Or using a Genome object
+
+``` python
+from ucsc.api import Genome 
+```
+
+``` python 
+genome.isTrackExists('longLabel')
+```
+
 List the schema of specified track from given genome 
 
 ``` python

@@ -79,8 +79,15 @@ class Genome:  # eyad
     def tracks(self):
         return Track.get(self.genomeName)
 
+
     def findTrack(self, trackName):
         return Track.find(self.genomeName, trackName)
+
+    def findTrackBy(self, attributeName, trackName):
+        return Track.findBy(self.genomeName, attributeName,trackName)
+
+    def isTrackExists(self,trackName):
+        return Track.exists(self.genomeName, trackName)
 
     @staticmethod
     def find(genomeName):
@@ -148,7 +155,6 @@ class Track:  # mazen
 
     @staticmethod
     def get(genomeName):
-
         response = requests.get(BASE_URL + '/list/tracks', {'genome': genomeName}).json()
         myList = []
         for key in response[genomeName]:
@@ -168,7 +174,7 @@ class Track:  # mazen
             if getattr(track, trackAttribute) == value:
                 print('track found')
                 return track
-        raise Exception("can't find track, Genome does not exist")
+        raise Exception("can't find track, Track does not exist")
 
 
 
