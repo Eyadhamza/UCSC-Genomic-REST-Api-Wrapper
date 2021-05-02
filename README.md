@@ -23,21 +23,34 @@ An open-source python package licensed under the MIT license, the package repres
 ## Documentation
 
 ### Quick Introduction for busy developers
+
 There are 6 primary classes in the package:
 
-Hub, Genome, Track, TrackSchema, Chromosome, Sequence
+``` python
+from ucsc.api import Hub, Genome, Track, TrackSchema, Chromosome, Sequence  
+```
+
+
 
 Each class has the following primary method:
 
-get : returns list of objects of the class
+``` python
+# check documentation for required and optional parameters
 
-find : Find object by name
+className.get()  # Returns list of objects of the class
 
-findBy : Find object by a specified attribute
+className.find()  # Find object by name
 
-exists : Check to see if an object exists
+className.findBy()  # Find object by a specified attribute
+
+className.exists()  # Check to see if an object exists
+```
+
 
 Then you can access the attributes of the object using . notation
+``` python
+className.attributeName # Returns attribute name
+```
 
 
 ## Installation 
