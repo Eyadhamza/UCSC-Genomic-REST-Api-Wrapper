@@ -224,7 +224,7 @@ class Chromosome:  # salma
 
 
 class Sequence:  # sohaila
-    def init(self, genome, chrom, dna, hub=None, track=None, start=None, end=None):
+    def __init__(self, genome, chrom, dna, hub=None, track=None, start=None, end=None):
         self.end = end
         self.start = start
         self.track = track
