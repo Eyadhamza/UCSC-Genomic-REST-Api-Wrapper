@@ -5,7 +5,7 @@ BASE_URL = 'http://api.genome.ucsc.edu'
 
 class Hub:  # yasmeen
 
-    def __init__(self,**kwargs):
+    def __init__(self, **kwargs):
 
         self.shortLabel = kwargs.get('shortLabel')
         self.hubUrl = kwargs.get('hubUrl')
@@ -198,6 +198,7 @@ class Chromosome:  # salma
         # fetch the track based on name
         # return the track as an object with all required attributes
         self.trackName = trackName
+
 
     @staticmethod
     def getChromosomes(genome=None, hub=None, track=None):

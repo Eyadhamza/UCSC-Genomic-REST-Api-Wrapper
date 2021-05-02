@@ -143,17 +143,33 @@ track = Track.find('hg38','knownGene')
 trackSchema = track.schema('hg38')
 ```
 
+List chromosomes from UCSC database genome 
 
+``` 
+from ucsc.api import Chromosome 
+```
 
+``` 
+chromosomes = Chromosome.get('hg38')
+```
 
+List chromosomes from specified track in UCSC database genome
 
-  only one function to get the list of chromosomes
+``` 
+from ucsc.api import Chromosome 
+```
 
-  list chromosomes from UCSC database genome then hub and track = None
- chromosomes1 = Chromosome.getChromosomes(genome)
+```
 
-  list chromosomes from specified track in UCSC database genome
- chromosomes2 = Chromosome.getChromosomes(genome, track=track)
+chromosomes = Chromosome.get('hg38', 'knownGene')
+
+# or
+track = Track.find('hg38','knownGene') 
+genome = Genome.find('ALFA Genome')
+chromosomes = Chromosome.get(genome, track)
+```
+
+chromosomes2 = Chromosome.getChromosomes(genome, track=track)
 
   list chromosomes from assembly hub genome
  chromosomes3 = Chromosome.getChromosomes(genome, hub)
