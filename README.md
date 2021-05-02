@@ -7,6 +7,19 @@ An open-source python package licensed under the MIT license, the package repres
 
 [Project Proposal](https://github.com/Eyadhamza/UCSC-Genomic-REST-Api-Wrapper/blob/main/UCSC%20Genomic%20REST%20Api%20Wrapper.pdf)
 
+
+## Features
+
+-  Expressive Api
+
+-  Easy to use
+
+-  Can be extended
+  
+-  Can be reused.
+
+-  No boilerplate  
+
 ## Documentation
 
 ### Quick Introduction for busy developers
@@ -25,6 +38,16 @@ findBy : Find object by a specified attribute
 exists : Check to see if an object exists
 
 Then you can access the attributes of the object using . notation
+
+
+## Installation 
+
+Install ucsc with pip
+
+```bash 
+  pip install ucsc
+```
+    
 
 ## Usage guide
 
