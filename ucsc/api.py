@@ -56,6 +56,8 @@ class Genome:  # eyad
         URL = 'ucscGenomes' if hubUrl is None else 'hubGenomes'
 
         response = requests.get(BASE_URL + f'/list/{URL}', {'hubUrl': hubUrl}).json()
+
+        # response is dictionary
         genomesList = []
         genomesResponse = 'ucscGenomes' if hubUrl is None else 'genomes'
 
@@ -63,6 +65,9 @@ class Genome:  # eyad
             genomesList.append(Genome(key, **response[genomesResponse][key]))
         return genomesList
 
+    # Genome.get() # http://api.genome.ucsc.edu/list/ucscGenomes
+    # Genome.get('http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt')
+    # http://api.genome.ucsc.edu/list/hubGenomes?hubUrl=http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt
     @staticmethod
     def exists(genomeName):
         for genome in Genome.get():
@@ -71,6 +76,10 @@ class Genome:  # eyad
 
         return False
 
+    # Track.get('hg38')
+    # or
+    # genome = Genome.find('hg38')
+    # genome.tracks
     @property
     def tracks(self):
         return Track.get(self.genomeName)
@@ -100,6 +109,8 @@ class Genome:  # eyad
                 return genome
         raise Exception("can't find genome, Genome does not exist")
 
+
+# Genome.findBy('genomeName','PWK_PhJ')
 
 class Track:  # mazen
     def __init__(self, trackName, **kwargs):
@@ -226,7 +237,7 @@ class Chromosome:  # salma
 
 
 class Sequence:  # sohaila
-    def init(self, genome, chrom, dna, hub=None, track=None, start=None, end=None):
+    def __init__(self, genome, chrom, dna=None, hub=None, track=None, start=None, end=None):
         self.end = end
         self.start = start
         self.track = track
@@ -234,4 +245,19 @@ class Sequence:  # sohaila
         self.chrom = chrom
         self.dna = dna
         self.genome = genome
+
+    @staticmethod
+    def get(genome, chrom):
+        response = requests.get(BASE_URL + '/getData/sequence',{'genome' : genome , 'chrom':chrom}).json()
+        # TODO
+        sequence = Sequence(response['genome'],response['chrom'],response['dna'])
+        print(sequence.__dict__)
+
+
+
+
+        # sequence = Sequence()
+
+
+
 
