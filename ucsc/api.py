@@ -5,8 +5,7 @@ BASE_URL = 'http://api.genome.ucsc.edu'
 
 class Hub:  # yasmeen
 
-    def __init__(self,**kwargs):
-
+    def __init__(self, **kwargs):
         self.shortLabel = kwargs.get('shortLabel')
         self.hubUrl = kwargs.get('hubUrl')
         self.longLabel = kwargs.get('longLabel')
@@ -14,7 +13,6 @@ class Hub:  # yasmeen
         self.dbCount = kwargs.get('dbCount')
         self.dbList = kwargs.get('dbList')
         self.descriptionUrl = kwargs.get('descriptionUrl')
-
 
     @staticmethod
     def get():
@@ -24,11 +22,9 @@ class Hub:  # yasmeen
             myList.append(Hub(**key))
         return myList
 
-
     def getGenomes(self):
         return Genome.get(self.hubUrl)
         # call to api.genome.ucsc.edu/list/hubGenomes?hubUrl=http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt
-
 
 
 class Genome:  # eyad
@@ -57,15 +53,15 @@ class Genome:  # eyad
 
     @staticmethod
     def get(hubUrl=None):
-        genomesRequest = 'ucscGenomes' if hubUrl is None else 'hubGenomes'
+        URL = 'ucscGenomes' if hubUrl is None else 'hubGenomes'
 
-        response = requests.get(BASE_URL + f'/list/{genomesRequest}', {'hubUrl':hubUrl}).json()
-        myList = []
+        response = requests.get(BASE_URL + f'/list/{URL}', {'hubUrl': hubUrl}).json()
+        genomesList = []
         genomesResponse = 'ucscGenomes' if hubUrl is None else 'genomes'
 
         for key in response[genomesResponse]:
-            myList.append(Genome(key, **response[genomesResponse][key]))
-        return myList
+            genomesList.append(Genome(key, **response[genomesResponse][key]))
+        return genomesList
 
     @staticmethod
     def exists(genomeName):
@@ -81,6 +77,12 @@ class Genome:  # eyad
 
     def findTrack(self, trackName):
         return Track.find(self.genomeName, trackName)
+
+    def findTrackBy(self, attributeName, trackName):
+        return Track.findBy(self.genomeName, attributeName, trackName)
+
+    def isTrackExists(self, trackName):
+        return Track.exists(self.genomeName, trackName)
 
     @staticmethod
     def find(genomeName):
@@ -100,7 +102,7 @@ class Genome:  # eyad
 
 
 class Track:  # mazen
-    def __init__(self,trackName, **kwargs):
+    def __init__(self, trackName, **kwargs):
         # fetch the track based on name
         # return the track as an object with all required attributes
         self.trackName = trackName
@@ -148,12 +150,11 @@ class Track:  # mazen
 
     @staticmethod
     def get(genomeName):
-
         response = requests.get(BASE_URL + '/list/tracks', {'genome': genomeName}).json()
-        myList = []
+        trackList = []
         for key in response[genomeName]:
-            myList.append(Track(key, **response[genomeName][key]))
-        return myList
+            trackList.append(Track(key, **response[genomeName][key]))
+        return trackList
 
     @staticmethod
     def find(genomeName, trackName):
@@ -168,15 +169,13 @@ class Track:  # mazen
             if getattr(track, trackAttribute) == value:
                 print('track found')
                 return track
-        raise Exception("can't find track, Genome does not exist")
-
-
+        raise Exception("can't find track, Track does not exist")
 
     def schema(self, genomeName):
-        return Schema.get(genomeName, self.trackName)
+        return TrackSchema.get(genomeName, self.trackName)
 
 
-class Schema:
+class TrackSchema:
     def __init__(self, **kwargs):
         self.name = kwargs['name'],
         self.sqlType = kwargs['sqlType'],
@@ -186,27 +185,53 @@ class Schema:
     @staticmethod
     def get(genomeName, trackName):
         response = requests.get(BASE_URL + '/list/schema', {'genome': genomeName, 'track': trackName}).json()
-        myList = []
+        schemaList = []
 
         for key in response['columnTypes']:
-            myList.append(Schema(**key))
-        return myList
+            schemaList.append(TrackSchema(**key))
+        return schemaList
 
 
 
 
 class Chromosome:  # salma
-    def __init__(self, trackName=None, hub=None, track=None):
-        # fetch the track based on name
-        # return the track as an object with all required attributes
-        self.trackName = trackName
+    def __init__(self, chromosomeName):
+        self.chromosomeName = chromosomeName
 
     @staticmethod
-    def getChromosomes(genome=None, hub=None, track=None):
-        return []
+    def get(hub=None, genome=None, track=None):
+        URL = BASE_URL + '/list/chromosomes'
+        response = requests.get(URL, {'genome': genome, 'track': track, 'hub': hub})
+        chromosomesList = []
+
+        for key in response.json()['chromosomes']:
+            chromosomesList.append(Chromosome(key))
+        return chromosomesList
+
+    @staticmethod
+    def exists(chromosomeName, hub=None, genome=None, track=None):
+        for chromosome in Chromosome.get(hub, genome, track):
+            if chromosome.chromosomeName == chromosomeName:
+                return True
+
+        return False
+
+    @staticmethod
+    def find(chromosomeName, hub=None, genome=None, track=None):
+        for chromosome in Chromosome.get(hub, genome, track):
+            if chromosome.chromosomeName == chromosomeName:
+                return chromosome
+
+        raise Exception("can't find chromosome, Chromosome does not exist")
 
 
 class Sequence:  # sohaila
-    def __init__(self, genome, chromosome, hub=None, track=None, chromStart=None, chromEnd=None):
-        # must return the
-        self.dna = None
+    def init(self, genome, chrom, dna, hub=None, track=None, start=None, end=None):
+        self.end = end
+        self.start = start
+        self.track = track
+        self.hub = hub
+        self.chrom = chrom
+        self.dna = dna
+        self.genome = genome
+

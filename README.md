@@ -3,58 +3,119 @@ An open-source python package licensed under the MIT license, the package repres
 
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 
-## Documentation 
+## About The Package
 
- list of available hubs as python objects 
+[Project Proposal](https://github.com/Eyadhamza/UCSC-Genomic-REST-Api-Wrapper/blob/main/UCSC%20Genomic%20REST%20Api%20Wrapper.pdf)
 
-``` 
+
+## Features
+
+-  Expressive Api
+
+-  Easy to use
+
+-  Can be extended
+  
+-  Can be reused.
+
+-  No boilerplate  
+
+## Installation 
+
+Install ucsc with pip
+
+```bash 
+  pip install ucsc
+```
+
+## Documentation
+
+### Quick Introduction for busy developers
+
+There are 6 primary classes in the package:
+
+``` python
+from ucsc.api import Hub, Genome, Track, TrackSchema, Chromosome, Sequence  
+```
+
+
+
+Each class has the following primary method:
+
+``` python
+# check documentation for required and optional parameters
+
+className.get()  # Returns list of objects of the class
+
+className.find()  # Find object by name
+
+className.findBy()  # Find object by a specified attribute
+
+className.exists()  # Check to see if an object exists
+```
+
+
+Then you can access the attributes of the object using . notation
+``` python
+className.attributeName # Returns attribute name
+```
+
+
+
+    
+
+## Usage guide
+
+List of available hubs as python objects 
+
+``` python
 from ucsc.api import Hub  
 ```
 
-``` 
-hubList = Hub.get() 
+``` python
+hubList = Hub.get()
 ```
 
 
 Find hub by name, the function will return the result as an object or throws a not found exception
 
-``` 
+```python 
 from ucsc.api import Hub  
 ```
 
-``` 
+```python 
 hub = Hub.find('ALFA Hub') 
 ```  
 
 Find hub by given attribute, the function will return the result as an object or throws a not found exception
 
-``` 
+``` python
 from ucsc.api import Hub  
 ```
 
-``` 
+``` python
 hub = Hub.find('hubName','ALFA Hub') 
 ```
 
 
 Get all genomes from specified hub object
   
-``` 
+``` python
 from ucsc.api import Hub  
 ```
 
-``` 
+``` python
 hub = Hub.getGenomes('ALFA Hub') 
 ``` 
 
 
 Get all genomes from all UCSC Database
 
-``` 
+``` python
 from ucsc.api import Genome 
 ```
 
-```  
+```  python
 genomesList = Genome.get() 
 ```
 
@@ -62,41 +123,41 @@ genomesList = Genome.get()
 
 Find genome by name, the function will return the result as an object or throws a not found exception
 
-``` 
+``` python
 from ucsc.api import Genome 
 ```
 
-``` 
+``` python
 genome = Genome.find('ALFA Genome') 
 ```  
 
 Find genome by given attribute, the function will return the result as an object or throws a not found exception
 
-``` 
+``` python
 from ucsc.api import Genome  
 ```
 
-``` 
+``` python
 genome = Genome.findBy('genomeName','ALFA Genome') 
 ```
 
 Check if genome exists in a UCSC database
 
-``` 
+``` python
 from ucsc.api import Genome
  ```
 
-```
+``` python
  Genome.exists('hg38') 
 ```
 
 List the available tracks of the genome object
 
-``` 
+``` python
 from ucsc.api import Genome 
 ```
 
-``` 
+``` python
 genome = Genome.find('ALFA Genome') 
 tracks = genome.tracks 
 ```
@@ -104,68 +165,143 @@ tracks = genome.tracks
  
 Find a specific track in a genome by name, the return type is an object of track
 
-``` 
+``` python
 from ucsc.api import Track 
 ```
 
-``` 
+``` python
 track = Track.find('hg38','knownGene') 
+
+```
+Or using a Genome object
+
+``` python
+from ucsc.api import Genome 
+```
+
+``` python 
+genome.findTrack('knownGene')
 ```
 
 Find a specific track using a specific attribute, the return type is an object of track
 
-``` 
+``` python
 from ucsc.api import Track
  ```
 
-``` 
+``` python
 track = Track.findBy('hg38','longLabel','ClinGen curation ') 
+```
+
+Or using a Genome object
+
+``` python
+from ucsc.api import Genome 
+```
+
+``` python 
+genome.findTrackBy('longLabel','knownGene')
 ```
 
 Check if track exists in a genome
 
-``` 
+``` python
 from ucsc.api import Track 
 ```
 
-``` 
+``` python
 Track.exists('hg38','knownGene') 
 ```
+
+Or using a Genome object
+
+``` python
+from ucsc.api import Genome 
+```
+
+``` python 
+genome.isTrackExists('longLabel')
+```
+
 List the schema of specified track from given genome 
 
-``` 
+``` python
 from ucsc.api import Track 
 ```
 
-``` 
+``` python
 track = Track.find('hg38','knownGene') 
 
 trackSchema = track.schema('hg38')
 ```
 
+List chromosomes from UCSC database genome 
+
+``` python
+from ucsc.api import Chromosome 
+```
+
+``` python
+chromosomes = Chromosome.get('hg38')
+```
+
+List chromosomes from specified track in UCSC database genome
+
+``` python
+from ucsc.api import Chromosome 
+```
+
+``` python
+chromosomes = Chromosome.get('hg38', 'knownGene')
+
+# or 
+track = Track.find('hg38','knownGene') 
+genome = Genome.find('ALFA Genome')
+chromosomes = Chromosome.get(genome, track)
+```
 
 
+List chromosomes from assembly hub genome
+
+``` python
+from ucsc.api import Chromosome 
+```
+
+``` python
+chromosomes = Chromosome.get('hg38', 'ALFA Hub')
+```
+
+List chromosomes from specified track in assembly hub genome
+
+``` python
+from ucsc.api import Chromosome 
+```
+
+``` python
+chromosomes = Chromosome.get('hg38', 'ALFA Hub','knownGene')
+```
+
+Find Specific chromosome
+``` python
+from ucsc.api import Chromosome 
+```
+
+``` python
+chromosome = Chromosome.find(genome)
+```
 
 
-  only one function to get the list of chromosomes
+Find DNA sequence
+``` python
+from ucsc.api import Sequence 
+```
 
-  list chromosomes from UCSC database genome then hub and track = None
- chromosomes1 = Chromosome.getChromosomes(genome)
+``` python
+chromStart = 123
+chromEnd = 543
 
-  list chromosomes from specified track in UCSC database genome
- chromosomes2 = Chromosome.getChromosomes(genome, track=track)
+sequence = Sequence.find('hg38', 'ALFA Hub','knownGene', 'Chrm', chromStart, chromEnd)
+# this will return a sequence object, you can then access the sequence data using :
+print(sequence.dna)
+```
 
-  list chromosomes from assembly hub genome
- chromosomes3 = Chromosome.getChromosomes(genome, hub)
-
-  list chromosomes from specified track in assembly hub genome
- chromosomes4 = Chromosome.getChromosomes(genome, hub, track)
-
- chromosome = Chromosome(genome)
-
- chromStart = 123
- chromEnd = 543
-
- sequence = Sequence(hub, genome, track, chromosome, chromStart, chromEnd)
-
-  sequence.dna
