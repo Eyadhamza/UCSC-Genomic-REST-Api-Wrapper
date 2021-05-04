@@ -245,11 +245,11 @@ class Sequence:  # sohaila
         self.genome = genome
 
     @staticmethod
-    def get(genome, chrom):
-        response = requests.get(BASE_URL + '/getData/sequence',{'genome' : genome , 'chrom':chrom}).json()
-        # TODO
-        sequence = Sequence(response['genome'],response['chrom'],response['dna'])
-        print(sequence.__dict__)
+    def get(genome, chrom,hubUrl=None,start=None,end=None):
+        URL = BASE_URL + '/getData/sequence'
+        parms  = {'hubUrl':hubUrl,'genome': genome, 'chrom': chrom,'start':start,'end':end}
+        response = requests.get(URL, parms).json()
+        return Sequence(**response)
 
 
 
