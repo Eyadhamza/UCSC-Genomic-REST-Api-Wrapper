@@ -11,7 +11,6 @@ class NotAllowedException(Exception):
     pass
 
 
-
 class Hub:
     request = BASE_URL + '/list/publicHubs'
     key = 'publicHubs'
@@ -27,7 +26,6 @@ class Hub:
 
     @staticmethod
     def get():
-
         response = requests.get(Hub.request).json()
 
         myList = []
@@ -195,6 +193,24 @@ class Track:
     def schema(self, genomeName):
         return TrackSchema.get(genomeName, self.trackName)
 
+    def trackData(self, genome, chrom=None, chromStart=None, chromEnd=None, hubUrl=None, maxItemsOutput=None):
+        URL = BASE_URL + '/getData/track'
+        params = {'genome': genome, 'track': self.trackName,
+                  'maxItemsOutput': maxItemsOutput,
+                  'chrom': chrom, 'chromStart': chromStart,
+                  'chromEnd': chromEnd, 'hubUrl': hubUrl}
+
+        response = requests.get(URL, params).json()
+
+        chromList = []
+        fragmentList = []
+        for key in response[self.trackName]:
+            chromList.append(Chromosome(key))
+            for chromosome in chromList:
+                for fragment in response[self.trackName][chromosome.chromosomeName]:
+                    fragmentList.append(Fragment(**fragment))
+        return fragmentList
+
 
 class TrackSchema:
     def __init__(self, **kwargs):
@@ -242,6 +258,20 @@ class Chromosome:
                 return chromosome
 
         raise Exception("can't find chromosome, Chromosome does not exist")
+
+
+class Fragment:
+    def __init__(self, **kwargs):
+        self.chrom = kwargs['chrom'],
+        self.chromStart = kwargs['chromStart'],
+        self.chromEnd = kwargs['chromEnd'],
+        self.bin = kwargs['bin'],
+        self.ix = kwargs['ix'],
+        self.type = kwargs['type'],
+        self.frag = kwargs['frag'],
+        self.fragStart = kwargs['fragStart'],
+        self.fragEnd = kwargs['fragEnd'],
+        self.strand = kwargs['strand']
 
 
 class Sequence:

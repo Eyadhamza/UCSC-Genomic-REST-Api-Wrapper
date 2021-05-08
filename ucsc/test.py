@@ -1,10 +1,8 @@
 from ucsc.api import Genome, Track, Hub, Chromosome, Sequence
 
+track = Track('gold')
 
-
-
-print(Hub.get())
-
+print(track.trackData(genome='hg38',maxItemsOutput=1000))
 
 
 #
