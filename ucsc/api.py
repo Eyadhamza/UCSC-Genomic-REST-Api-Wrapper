@@ -5,9 +5,7 @@ BASE_URL = 'http://api.genome.ucsc.edu'
 
 
 class NotFoundException(Exception):
-    def __init__(self,url):
-        self.url=url
-
+    pass
 
 
 class NotAllowedException(Exception):
