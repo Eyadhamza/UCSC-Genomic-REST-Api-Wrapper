@@ -1,5 +1,6 @@
 import requests
 import urllib.request
+
 BASE_URL = 'http://api.genome.ucsc.edu'
 
 
@@ -8,6 +9,14 @@ class NotFoundException(Exception):
 
 
 class NotAllowedException(Exception):
+    pass
+
+
+def raiseExceptionOfRequest(response):
+    if response.get('statusCode') == 400:
+        raise NotFoundException('The Requested Url was not found')
+    if response.get('statusCode') == 400:
+        raise NotAllowedException('The Requested Url is not allowed to be accessed')
     pass
 
 
@@ -27,7 +36,7 @@ class Hub:
     @staticmethod
     def get():
         response = requests.get(Hub.request).json()
-
+        raiseExceptionOfRequest(response)
         myList = []
         for key in response[Hub.key]:
             myList.append(Hub(**key))
@@ -67,8 +76,8 @@ class Genome:
         URL = 'ucscGenomes' if hubUrl is None else 'hubGenomes'
 
         response = requests.get(BASE_URL + f'/list/{URL}', {'hubUrl': hubUrl}).json()
+        raiseExceptionOfRequest(response)
 
-        # response is dictionary
         genomesList = []
         genomesResponse = 'ucscGenomes' if hubUrl is None else 'genomes'
 
@@ -170,6 +179,8 @@ class Track:
     @staticmethod
     def get(genomeName):
         response = requests.get(BASE_URL + '/list/tracks', {'genome': genomeName}).json()
+
+        raiseExceptionOfRequest(response)
         trackList = []
         for key in response[genomeName]:
             trackList.append(Track(key, **response[genomeName][key]))
@@ -204,6 +215,8 @@ class Track:
 
         response = requests.get(URL, params).json()
 
+        raiseExceptionOfRequest(response)
+
         chromList = []
         fragmentList = []
 
@@ -222,13 +235,14 @@ class Track:
                     fragmentList.append(Fragment(**fragment))
         return fragmentList
 
-    def downloadData(self, genome, chrom=None, chromStart=None, chromEnd=None, hubUrl=None, maxItemsOutput=None,filename=None):
+    def downloadData(self, genome, chrom=None, chromStart=None, chromEnd=None, hubUrl=None, maxItemsOutput=None,
+                     filename=None):
+
         url = self.trackData(genome, chrom, chromStart, chromEnd, hubUrl, maxItemsOutput, download=True)
 
         filename = genome + '_' + self.trackName + '.zip' if filename is None else filename
-        print('hit iy')
-        urllib.request.urlretrieve(url, filename)
 
+        urllib.request.urlretrieve(url, filename)
 
 
 class TrackSchema:
@@ -241,6 +255,7 @@ class TrackSchema:
     @staticmethod
     def get(genomeName, trackName):
         response = requests.get(BASE_URL + '/list/schema', {'genome': genomeName, 'track': trackName}).json()
+        raiseExceptionOfRequest(response)
         schemaList = []
 
         for key in response['columnTypes']:
@@ -256,6 +271,7 @@ class Chromosome:
     def get(hub=None, genome=None, track=None):
         URL = BASE_URL + '/list/chromosomes'
         response = requests.get(URL, {'genome': genome, 'track': track, 'hub': hub})
+        raiseExceptionOfRequest(response)
         chromosomesList = []
 
         for key in response.json()['chromosomes']:
@@ -308,4 +324,5 @@ class Sequence:
         URL = BASE_URL + '/getData/sequence'
         params = {'hubUrl': hubUrl, 'genome': genome, 'chrom': chrom, 'start': start, 'end': end}
         response = requests.get(URL, params).json()
+        raiseExceptionOfRequest(response)
         return Sequence(**response)
