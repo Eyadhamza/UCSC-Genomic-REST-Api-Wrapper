@@ -206,15 +206,11 @@ class Track:
         chromList = []
         fragmentList = []
 
-        if chrom is not None:
+        if chrom is not None or hubUrl is not None:
             for key in response[self.trackName]:
                 fragmentList.append(Fragment(**key))
             return fragmentList
 
-        if hubUrl is not None:
-            for key in response[self.trackName]:
-                fragmentList.append(Fragment(**key))
-            return fragmentList
 
         for key in response[self.trackName]:
             chromList.append(Chromosome(key))
