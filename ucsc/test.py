@@ -3,8 +3,7 @@ from ucsc.api import Genome, Track, Hub, Chromosome, Sequence
 
 
 
-
-
+print(Hub.get())
 
 
 

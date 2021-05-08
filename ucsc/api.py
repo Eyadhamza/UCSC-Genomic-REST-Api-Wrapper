@@ -11,7 +11,10 @@ class NotAllowedException(Exception):
     pass
 
 
+
 class Hub:
+    request = BASE_URL + '/list/publicHubs'
+    key = 'publicHubs'
 
     def __init__(self, **kwargs):
         self.shortLabel = kwargs.get('shortLabel')
@@ -24,9 +27,11 @@ class Hub:
 
     @staticmethod
     def get():
-        response = requests.get(BASE_URL + '/list/publicHubs').json()
+
+        response = requests.get(Hub.request).json()
+
         myList = []
-        for key in response['publicHubs']:
+        for key in response[Hub.key]:
             myList.append(Hub(**key))
         return myList
 
@@ -73,9 +78,6 @@ class Genome:
             genomesList.append(Genome(key, **response[genomesResponse][key]))
         return genomesList
 
-    # Genome.get() # http://api.genome.ucsc.edu/list/ucscGenomes
-    # Genome.get('http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt')
-    # http://api.genome.ucsc.edu/list/hubGenomes?hubUrl=http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt
     @staticmethod
     def exists(genomeName):
         for genome in Genome.get():
