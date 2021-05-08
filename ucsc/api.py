@@ -211,6 +211,10 @@ class Track:
                 fragmentList.append(Fragment(**key))
             return fragmentList
 
+        if hubUrl is not None:
+            for key in response[self.trackName]:
+                fragmentList.append(Fragment(**key))
+            return fragmentList
 
         for key in response[self.trackName]:
             chromList.append(Chromosome(key))
@@ -271,16 +275,16 @@ class Chromosome:
 
 class Fragment:
     def __init__(self, **kwargs):
-        self.chrom = kwargs['chrom'],
-        self.chromStart = kwargs['chromStart'],
-        self.chromEnd = kwargs['chromEnd'],
-        self.bin = kwargs['bin'],
-        self.ix = kwargs['ix'],
-        self.type = kwargs['type'],
-        self.frag = kwargs['frag'],
-        self.fragStart = kwargs['fragStart'],
-        self.fragEnd = kwargs['fragEnd'],
-        self.strand = kwargs['strand']
+        self.chrom = kwargs.get('chrom')
+        self.chromStart = kwargs.get('chromStart')
+        self.chromEnd = kwargs.get('chromEnd')
+        self.bin = kwargs.get('bin')
+        self.ix = kwargs.get('ix')
+        self.type = kwargs.get('type')
+        self.frag = kwargs.get('frag')
+        self.fragStart = kwargs.get('fragStart')
+        self.fragEnd = kwargs.get('fragEnd')
+        self.strand = kwargs.get('strand')
 
 
 class Sequence:
