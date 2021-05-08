@@ -14,11 +14,14 @@ class NotAllowedException(Exception):
 
 def raiseExceptionOfRequest(response):
     if response.get('statusCode') == 400:
-        print(response)
         raise NotFoundException('Something went wrong, ' + response.get('error'))
 
-    if response.get('statusCode') == 400:
-        raise NotAllowedException('The Requested Url is not allowed to be accessed' + response.get('error'))
+    if response.get('statusCode') == 403:
+        raise NotAllowedException('The Requested Resource is not allowed to be accessed' + response.get('error'))
+
+    if response.get('error') is not None:
+        raise NotFoundException('An error happened, ' + response.get('error'))
+
     pass
 
 
