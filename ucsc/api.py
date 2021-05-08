@@ -207,6 +207,7 @@ class Track:
         for key in response[self.trackName]:
             chromList.append(Chromosome(key))
             for chromosome in chromList:
+                print(chromosome.chromosomeName)
                 for fragment in response[self.trackName][chromosome.chromosomeName]:
                     fragmentList.append(Fragment(**fragment))
         return fragmentList
