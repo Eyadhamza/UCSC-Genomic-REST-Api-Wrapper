@@ -1,9 +1,8 @@
 from ucsc.api import Genome, Track, Hub, Chromosome, Sequence
 
-track = Track('assembly')
+track = Track('gold')
 
-print(track.trackData(genome='CAST_EiJ',maxItemsOutput=10,hubUrl='http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt'))
-
+track.downloadData(genome='hg38',maxItemsOutput=10)
 
 #
 # myGenome = Genome.find('hg38')

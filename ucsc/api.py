@@ -1,5 +1,5 @@
 import requests
-
+import urllib.request
 BASE_URL = 'http://api.genome.ucsc.edu'
 
 
@@ -193,7 +193,8 @@ class Track:
     def schema(self, genomeName):
         return TrackSchema.get(genomeName, self.trackName)
 
-    def trackData(self, genome, chrom=None, chromStart=None, chromEnd=None, hubUrl=None, maxItemsOutput=None):
+    def trackData(self, genome, chrom=None, chromStart=None, chromEnd=None, hubUrl=None, maxItemsOutput=None,
+                  download=False):
         URL = BASE_URL + '/getData/track'
 
         params = {'genome': genome, 'track': self.trackName,
@@ -206,11 +207,12 @@ class Track:
         chromList = []
         fragmentList = []
 
+        if download:
+            return response.get('dataDownloadUrl')
         if chrom is not None or hubUrl is not None:
             for key in response[self.trackName]:
                 fragmentList.append(Fragment(**key))
             return fragmentList
-
 
         for key in response[self.trackName]:
             chromList.append(Chromosome(key))
@@ -219,6 +221,14 @@ class Track:
                 for fragment in response[self.trackName][chromosome.chromosomeName]:
                     fragmentList.append(Fragment(**fragment))
         return fragmentList
+
+    def downloadData(self, genome, chrom=None, chromStart=None, chromEnd=None, hubUrl=None, maxItemsOutput=None,filename=None):
+        url = self.trackData(genome, chrom, chromStart, chromEnd, hubUrl, maxItemsOutput, download=True)
+
+        filename = genome + '_' + self.trackName + '.zip' if filename is None else filename
+        print('hit iy')
+        urllib.request.urlretrieve(url, filename)
+
 
 
 class TrackSchema:
