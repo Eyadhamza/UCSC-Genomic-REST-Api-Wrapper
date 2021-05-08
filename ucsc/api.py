@@ -195,6 +195,7 @@ class Track:
 
     def trackData(self, genome, chrom=None, chromStart=None, chromEnd=None, hubUrl=None, maxItemsOutput=None):
         URL = BASE_URL + '/getData/track'
+
         params = {'genome': genome, 'track': self.trackName,
                   'maxItemsOutput': maxItemsOutput,
                   'chrom': chrom, 'chromStart': chromStart,
@@ -204,6 +205,13 @@ class Track:
 
         chromList = []
         fragmentList = []
+
+        if chrom is not None:
+            for key in response[self.trackName]:
+                fragmentList.append(Fragment(**key))
+            return fragmentList
+
+
         for key in response[self.trackName]:
             chromList.append(Chromosome(key))
             for chromosome in chromList:
