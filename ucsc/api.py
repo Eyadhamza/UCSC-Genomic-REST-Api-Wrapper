@@ -5,7 +5,9 @@ BASE_URL = 'http://api.genome.ucsc.edu'
 
 
 class NotFoundException(Exception):
-    pass
+    def __init__(self,url):
+        self.url=url
+
 
 
 class NotAllowedException(Exception):
@@ -14,9 +16,11 @@ class NotAllowedException(Exception):
 
 def raiseExceptionOfRequest(response):
     if response.get('statusCode') == 400:
-        raise NotFoundException('The Requested Url was not found')
+        print(response)
+        raise NotFoundException('Something went wrong, ' + response.get('error'))
+
     if response.get('statusCode') == 400:
-        raise NotAllowedException('The Requested Url is not allowed to be accessed')
+        raise NotAllowedException('The Requested Url is not allowed to be accessed' + response.get('error'))
     pass
 
 

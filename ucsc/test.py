@@ -1,7 +1,7 @@
 from ucsc.api import Genome, Track, Hub, Chromosome, Sequence
 
 track = Track('gold')
-# Track.get('asdasdasd')
+
 track.downloadData(genome='hg3adas8',maxItemsOutput=10)
 
 #
