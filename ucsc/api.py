@@ -3,7 +3,15 @@ import requests
 BASE_URL = 'http://api.genome.ucsc.edu'
 
 
-class Hub:  # yasmeen
+class NotFoundException(Exception):
+    pass
+
+
+class NotAllowedException(Exception):
+    pass
+
+
+class Hub:
 
     def __init__(self, **kwargs):
         self.shortLabel = kwargs.get('shortLabel')
@@ -27,7 +35,7 @@ class Hub:  # yasmeen
         # call to api.genome.ucsc.edu/list/hubGenomes?hubUrl=http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt
 
 
-class Genome:  # eyad
+class Genome:
     def __init__(self, genomeName, **kwargs):
 
         self.genomeName = genomeName
@@ -112,7 +120,7 @@ class Genome:  # eyad
 
 # Genome.findBy('genomeName','PWK_PhJ')
 
-class Track:  # mazen
+class Track:
     def __init__(self, trackName, **kwargs):
         # fetch the track based on name
         # return the track as an object with all required attributes
@@ -203,7 +211,7 @@ class TrackSchema:
         return schemaList
 
 
-class Chromosome:  # salma
+class Chromosome:
     def __init__(self, chromosomeName):
         self.chromosomeName = chromosomeName
 
@@ -234,7 +242,7 @@ class Chromosome:  # salma
         raise Exception("can't find chromosome, Chromosome does not exist")
 
 
-class Sequence:  # sohaila
+class Sequence:
     def __init__(self, genome, chrom, dna=None, hub=None, track=None, start=None, end=None):
         self.end = end
         self.start = start
@@ -245,17 +253,8 @@ class Sequence:  # sohaila
         self.genome = genome
 
     @staticmethod
-    def get(genome, chrom,hubUrl=None,start=None,end=None):
+    def get(genome, chrom, hubUrl=None, start=None, end=None):
         URL = BASE_URL + '/getData/sequence'
-        parms  = {'hubUrl':hubUrl,'genome': genome, 'chrom': chrom,'start':start,'end':end}
-        response = requests.get(URL, parms).json()
+        params = {'hubUrl': hubUrl, 'genome': genome, 'chrom': chrom, 'start': start, 'end': end}
+        response = requests.get(URL, params).json()
         return Sequence(**response)
-
-
-
-
-        # sequence = Sequence()
-
-
-
-
