@@ -1,12 +1,18 @@
 from ucsc.api import Genome, Track, Hub, Chromosome, Sequence
 
+track = Track('gold')
 
+<<<<<<< HEAD
 sequence = Sequence.get( genome= 'mm10',chrom= 'chrM')
 print(sequence.__dict__)
 
 #Sequence.getByGenomeChrom('hg38','chrM')
 
 #Hub.get()
+=======
+track.downloadData(genome='hg3adas8',maxItemsOutput=10)
+
+>>>>>>> 7ff93108599b9f7ae954d41433c1a03facaf80ef
 #
 # myGenome = Genome.find('hg38')
 

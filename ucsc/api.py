@@ -1,9 +1,33 @@
 import requests
+import urllib.request
 
 BASE_URL = 'http://api.genome.ucsc.edu'
 
 
-class Hub:  # yasmeen
+class NotFoundException(Exception):
+    pass
+
+
+class NotAllowedException(Exception):
+    pass
+
+
+def raiseExceptionOfRequest(response):
+    if response.get('statusCode') == 400:
+        raise NotFoundException('Something went wrong, ' + response.get('error'))
+
+    if response.get('statusCode') == 403:
+        raise NotAllowedException('The Requested Resource is not allowed to be accessed' + response.get('error'))
+
+    if response.get('error') is not None:
+        raise NotFoundException('An error happened, ' + response.get('error'))
+
+    pass
+
+
+class Hub:
+    request = BASE_URL + '/list/publicHubs'
+    key = 'publicHubs'
 
     def __init__(self, **kwargs):
         self.shortLabel = kwargs.get('shortLabel')
@@ -16,9 +40,10 @@ class Hub:  # yasmeen
 
     @staticmethod
     def get():
-        response = requests.get(BASE_URL + '/list/publicHubs').json()
+        response = requests.get(Hub.request).json()
+        raiseExceptionOfRequest(response)
         myList = []
-        for key in response['publicHubs']:
+        for key in response[Hub.key]:
             myList.append(Hub(**key))
         return myList
 
@@ -27,7 +52,7 @@ class Hub:  # yasmeen
         # call to api.genome.ucsc.edu/list/hubGenomes?hubUrl=http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt
 
 
-class Genome:  # eyad
+class Genome:
     def __init__(self, genomeName, **kwargs):
 
         self.genomeName = genomeName
@@ -56,8 +81,8 @@ class Genome:  # eyad
         URL = 'ucscGenomes' if hubUrl is None else 'hubGenomes'
 
         response = requests.get(BASE_URL + f'/list/{URL}', {'hubUrl': hubUrl}).json()
+        raiseExceptionOfRequest(response)
 
-        # response is dictionary
         genomesList = []
         genomesResponse = 'ucscGenomes' if hubUrl is None else 'genomes'
 
@@ -65,9 +90,6 @@ class Genome:  # eyad
             genomesList.append(Genome(key, **response[genomesResponse][key]))
         return genomesList
 
-    # Genome.get() # http://api.genome.ucsc.edu/list/ucscGenomes
-    # Genome.get('http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt')
-    # http://api.genome.ucsc.edu/list/hubGenomes?hubUrl=http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt
     @staticmethod
     def exists(genomeName):
         for genome in Genome.get():
@@ -112,7 +134,7 @@ class Genome:  # eyad
 
 # Genome.findBy('genomeName','PWK_PhJ')
 
-class Track:  # mazen
+class Track:
     def __init__(self, trackName, **kwargs):
         # fetch the track based on name
         # return the track as an object with all required attributes
@@ -162,6 +184,8 @@ class Track:  # mazen
     @staticmethod
     def get(genomeName):
         response = requests.get(BASE_URL + '/list/tracks', {'genome': genomeName}).json()
+
+        raiseExceptionOfRequest(response)
         trackList = []
         for key in response[genomeName]:
             trackList.append(Track(key, **response[genomeName][key]))
@@ -185,6 +209,46 @@ class Track:  # mazen
     def schema(self, genomeName):
         return TrackSchema.get(genomeName, self.trackName)
 
+    def trackData(self, genome, chrom=None, chromStart=None, chromEnd=None, hubUrl=None, maxItemsOutput=None,
+                  download=False):
+        URL = BASE_URL + '/getData/track'
+
+        params = {'genome': genome, 'track': self.trackName,
+                  'maxItemsOutput': maxItemsOutput,
+                  'chrom': chrom, 'chromStart': chromStart,
+                  'chromEnd': chromEnd, 'hubUrl': hubUrl}
+
+        response = requests.get(URL, params).json()
+
+        raiseExceptionOfRequest(response)
+
+        chromList = []
+        fragmentList = []
+
+        if download:
+            return response.get('dataDownloadUrl')
+        if chrom is not None or hubUrl is not None:
+            for key in response[self.trackName]:
+                fragmentList.append(Fragment(**key))
+            return fragmentList
+
+        for key in response[self.trackName]:
+            chromList.append(Chromosome(key))
+            for chromosome in chromList:
+                print(chromosome.chromosomeName)
+                for fragment in response[self.trackName][chromosome.chromosomeName]:
+                    fragmentList.append(Fragment(**fragment))
+        return fragmentList
+
+    def downloadData(self, genome, chrom=None, chromStart=None, chromEnd=None, hubUrl=None, maxItemsOutput=None,
+                     filename=None):
+
+        url = self.trackData(genome, chrom, chromStart, chromEnd, hubUrl, maxItemsOutput, download=True)
+
+        filename = genome + '_' + self.trackName + '.zip' if filename is None else filename
+
+        urllib.request.urlretrieve(url, filename)
+
 
 class TrackSchema:
     def __init__(self, **kwargs):
@@ -196,6 +260,7 @@ class TrackSchema:
     @staticmethod
     def get(genomeName, trackName):
         response = requests.get(BASE_URL + '/list/schema', {'genome': genomeName, 'track': trackName}).json()
+        raiseExceptionOfRequest(response)
         schemaList = []
 
         for key in response['columnTypes']:
@@ -203,7 +268,7 @@ class TrackSchema:
         return schemaList
 
 
-class Chromosome:  # salma
+class Chromosome:
     def __init__(self, chromosomeName):
         self.chromosomeName = chromosomeName
 
@@ -211,6 +276,7 @@ class Chromosome:  # salma
     def get(hub=None, genome=None, track=None):
         URL = BASE_URL + '/list/chromosomes'
         response = requests.get(URL, {'genome': genome, 'track': track, 'hub': hub})
+        raiseExceptionOfRequest(response)
         chromosomesList = []
 
         for key in response.json()['chromosomes']:
@@ -249,4 +315,36 @@ class Sequence:  # sohaila
         URL = BASE_URL + '/getData/sequence'
         parms  = {'hubUrl':hubUrl,'genome': genome, 'chrom': chrom,'start':start,'end':end}
         response = requests.get(URL, parms).json()
+        return Sequence(**response)
+
+class Fragment:
+    def __init__(self, **kwargs):
+        self.chrom = kwargs.get('chrom')
+        self.chromStart = kwargs.get('chromStart')
+        self.chromEnd = kwargs.get('chromEnd')
+        self.bin = kwargs.get('bin')
+        self.ix = kwargs.get('ix')
+        self.type = kwargs.get('type')
+        self.frag = kwargs.get('frag')
+        self.fragStart = kwargs.get('fragStart')
+        self.fragEnd = kwargs.get('fragEnd')
+        self.strand = kwargs.get('strand')
+
+
+class Sequence:
+    def __init__(self, genome, chrom, dna=None, hub=None, track=None, start=None, end=None):
+        self.end = end
+        self.start = start
+        self.track = track
+        self.hub = hub
+        self.chrom = chrom
+        self.dna = dna
+        self.genome = genome
+
+    @staticmethod
+    def get(genome, chrom, hubUrl=None, start=None, end=None):
+        URL = BASE_URL + '/getData/sequence'
+        params = {'hubUrl': hubUrl, 'genome': genome, 'chrom': chrom, 'start': start, 'end': end}
+        response = requests.get(URL, params).json()
+        raiseExceptionOfRequest(response)
         return Sequence(**response)
