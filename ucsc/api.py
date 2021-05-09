@@ -203,8 +203,6 @@ class TrackSchema:
         return schemaList
 
 
-
-
 class Chromosome:  # salma
     def __init__(self, chromosomeName):
         self.chromosomeName = chromosomeName
@@ -237,27 +235,18 @@ class Chromosome:  # salma
 
 
 class Sequence:  # sohaila
-    def __init__(self, genome, chrom, dna=None, hub=None, track=None, start=None, end=None):
-        self.end = end
-        self.start = start
-        self.track = track
-        self.hub = hub
-        self.chrom = chrom
-        self.dna = dna
-        self.genome = genome
+    def __init__(self, **kwargs):
+        self.downloadTime = kwargs['downloadTime'],
+        self.downloadTimeStamp = kwargs['downloadTimeStamp'],
+        self.genome = kwargs['genome']
+        self.chrom = kwargs['chrom']
+        self.start = kwargs['start']
+        self.end = kwargs['end']
+        self.dna = kwargs['dna']
 
     @staticmethod
-    def get(genome, chrom):
-        response = requests.get(BASE_URL + '/getData/sequence',{'genome' : genome , 'chrom':chrom}).json()
-        # TODO
-        sequence = Sequence(response['genome'],response['chrom'],response['dna'])
-        print(sequence.__dict__)
-
-
-
-
-        # sequence = Sequence()
-
-
-
-
+    def get(genome, chrom,hubUrl=None,start=None,end=None):
+        URL = BASE_URL + '/getData/sequence'
+        parms  = {'hubUrl':hubUrl,'genome': genome, 'chrom': chrom,'start':start,'end':end}
+        response = requests.get(URL, parms).json()
+        return Sequence(**response)

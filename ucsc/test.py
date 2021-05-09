@@ -1,22 +1,22 @@
 from ucsc.api import Genome, Track, Hub, Chromosome, Sequence
 
 
+sequence = Sequence.get( genome= 'mm10',chrom= 'chrM')
+print(sequence.__dict__)
 
+#Sequence.getByGenomeChrom('hg38','chrM')
 
-
-
-
-
-
+#Hub.get()
 #
 # myGenome = Genome.find('hg38')
 
 
 # myTrack = Track.findBy('hg38','longLabel','ClinGen curation activities (Dosage Sensitivity and Gene-Disease Validity)')
 # # for genome in Genome.getUCSCGenomes():
-# for i in Hub.get():
-#     print(i.__dict__)
 
+
+#for i in Hub.get():
+ #   print(i.__dict__)
 
 # print(myGenome.tracks)
 
