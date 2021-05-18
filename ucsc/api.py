@@ -300,7 +300,6 @@ class Chromosome:
         raise Exception("can't find chromosome, Chromosome does not exist")
 
 
-
 class Fragment:
     def __init__(self, **kwargs):
         self.chrom = kwargs.get('chrom')
@@ -315,46 +314,20 @@ class Fragment:
         self.strand = kwargs.get('strand')
 
 
-class Sequence:  # sohaila
-    def __init__(self, **kwargs):
-        self.downloadTime = kwargs['downloadTime'],
-        self.downloadTimeStamp = kwargs['downloadTimeStamp'],
-        self.genome = kwargs['genome']
-        self.chrom = kwargs['chrom']
-        self.start = kwargs['start']
-        self.end = kwargs['end']
-        self.dna = kwargs['dna']
-
-    @staticmethod
-    def get(genome, chrom,hubUrl=None,start=None,end=None):
-        URL = BASE_URL + '/getData/sequence'
-        parms  = {'hubUrl':hubUrl,'genome': genome, 'chrom': chrom,'start':start,'end':end}
-        response = requests.get(URL, parms).json()
-        return Sequence(**response)
-
-
-class Sequence:  # sohaila --deleted--
-    def init(self, genome, chrom, dna=None, start=None, end=None, hubUrl=None):
-        self.genome = genome
-        self.chrom = chrom
-        self.start = start
+class Sequence:
+    def __init__(self, genome, chrom, dna=None, hub=None, track=None, start=None, end=None):
         self.end = end
+        self.start = start
+        self.track = track
+        self.hub = hub
+        self.chrom = chrom
         self.dna = dna
-        self.hubUrl=hubUrl
-
+        self.genome = genome
 
     @staticmethod
-    def get(genome, chrom, start, end):
-       response = requests.get(BASE_URL + '/getData/sequence', {'genome': genome, 'chrom': chrom, 'start': start, 'end': end}).json()
-
-       sequence = Sequence(response['genome'], response['chrom'], response['dna'], response['start'], response['end'])
-       print(sequence.dict)
-
-
-    def get2(genome, chrom, start, end, hubUrl):
-        response = requests.get(BASE_URL + '/getData/sequence',
-                                {'genome': genome, 'chrom': chrom, 'start': start, 'end': end, 'hubUrl': hubUrl}).json()
-
-        sequence = Sequence(response['genome'], response['chrom'], response['dna'], response['start'], response['end'],response['hubUrl'])
-        print(sequence.dict)
-
+    def get(genome, chrom, hubUrl=None, start=None, end=None):
+        URL = BASE_URL + '/getData/sequence'
+        params = {'hubUrl': hubUrl, 'genome': genome, 'chrom': chrom, 'start': start, 'end': end}
+        response = requests.get(URL, params).json()
+        raiseExceptionOfRequest(response)
+        return Sequence(**response)
