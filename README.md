@@ -244,17 +244,34 @@ hubUrl='http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt'
 
 track.trackData(genome='CAST_EiJ',track='assembly',hubUrl=hubUrl)
 
-?
-# Get track data for specified track and chromosome in an assembly hub genome -
-?hubUrl=http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt;genome=CAST_EiJ;track=assembly;chrom=chr1
+
+# Get track data for specified track and chromosome in an assembly hub genome 
+hubUrl='http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt'
+
+track.trackData(genome='CAST_EiJ',track='assembly',chrom='chr1',hubUrl=hubUrl)
+
 # Get track data for specified track in a track hub -
-?hubUrl=http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt;genome=CAST_EiJ;track=ensGene
-# Get track data for specified track and chromosome in a track hub -
-?hubUrl=http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt;genome=CAST_EiJ;track=ensGene;chrom=chr1
+
+hubUrl='http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt'
+
+track.trackData(genome='CAST_EiJ',track='ensGene',hubUrl=hubUrl)
+
+
+# Get track data for specified track and chromosome in a track hub 
+
+hubUrl='http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt'
+
+track.trackData(genome='CAST_EiJ',track='ensGene',chrom='chr1',hubUrl=hubUrl)
+
+
 # Download track data for specified track, chromosome with start and end limits in an assembly hub genome -
-?hubUrl=hubUrl=http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt;genome=CAST_EiJ;track=gc5Base;chrom=chr1;start=4321;end=5678
-# Download track data for specified track in a UCSC database genome -
-?genome=galGal6;track=gc5BaseBw;maxItemsOutput=100
+hubUrl='http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt'
+
+track.downloadData(genome='CAST_EiJ',track='ensGene',chrom='chr1',hubUrl=hubUrl,start=4321,end=5678)
+
+# Download track data for specified track in a UCSC database genome 
+track.downloadData(genome='galGal6',track='gc5BaseBw',maxItemsOutput=100)
+
 ```
 
 
