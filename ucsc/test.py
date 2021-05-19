@@ -3,7 +3,10 @@ from ucsc.api import Genome, Track, Hub, Chromosome, Sequence
 
 
 
+hub = Hub.find('ALFA Hub')
 
+print(hub.genomes.__dict__)
+print(hub.__dict__)
 
 # track = Track('gold')
 #

@@ -30,7 +30,7 @@ class Hub:
     key = 'publicHubs'
 
     def __init__(self, **kwargs):
-        self.shortLabel = kwargs.get('shortLabel')
+        self.name = kwargs.get('shortLabel')
         self.hubUrl = kwargs.get('hubUrl')
         self.longLabel = kwargs.get('longLabel')
         self.registrationTime = kwargs.get('registrationTime')
@@ -47,9 +47,25 @@ class Hub:
             myList.append(Hub(**key))
         return myList
 
-    def getGenomes(self):
+    @staticmethod
+    def find(hubName):
+        for hub in Hub.get():
+            if hub.name == hubName:
+                print('hub found')
+                return hub
+        raise Exception("can't find hub, Hub does not exist")
+
+    @staticmethod
+    def findBy(hubAttribute, value):
+        for hub in Hub.get():
+            if getattr(hub, hubAttribute) == value:
+                print('hub found')
+                return hub
+        raise Exception("can't find hub, Hub does not exist")
+
+    @property
+    def genomes(self):
         return Genome.get(self.hubUrl)
-        # call to api.genome.ucsc.edu/list/hubGenomes?hubUrl=http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt
 
 
 class Genome:
@@ -98,10 +114,6 @@ class Genome:
 
         return False
 
-    # Track.get('hg38')
-    # or
-    # genome = Genome.find('hg38')
-    # genome.tracks
     @property
     def tracks(self):
         return Track.get(self.genomeName)
@@ -227,7 +239,6 @@ class Track:
 
         if download:
             return response.get('dataDownloadUrl')
-
 
         if chrom is not None or hubUrl is not None:
             for key in response[self.trackName]:
