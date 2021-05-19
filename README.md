@@ -322,22 +322,6 @@ sequence = Sequence.get(genome= 'mm10',chrom= 'chrM',hubUrl=hubUrl,start=4321,en
 
 print(sequence.dna)
 
-
-
 ```
 
-Get DNA sequence from specified chromosome and start,end coordinates in an assembly hub genome -
-api.genome.ucsc.edu/getData/sequence?hubUrl=http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt;genome=CAST_EiJ;chrom=chr1;start=4321;end=5678
-``` python
-from ucsc.api import Sequence 
-```
-
-``` python
-chromStart = 123
-chromEnd = 543
-
-sequence = Sequence.find('hg38', 'ALFA Hub','knownGene', 'Chrm', chromStart, chromEnd)
-# this will return a sequence object, you can then access the sequence data using :
-print(sequence.dna)
-```
 
