@@ -292,6 +292,42 @@ chromosome = Chromosome.find(genome)
 
 
 Find DNA sequence
+
+The get method in Sequence class accepts multiple parameter, which depends on how do you want to retrieve the sequence object
+
+
+
+
+```python
+from ucsc.api import Sequence 
+
+
+# Get DNA sequence from specified chromosome in UCSC database genome -
+
+sequence = Sequence.get(genome = 'hg38',chrom= 'chrM')
+
+print(sequence.dna)
+
+# Get DNA sequence from specified chromosome and start,end coordinates in UCSC database genome -
+
+sequence = Sequence.get(genome= 'hg38',chrom= 'chrM',start=4321,end=5678)
+
+print(sequence.dna)
+
+# Get DNA sequence from a track hub where 'genome' is a UCSC database -
+
+hubUrl = 'http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt';
+
+sequence = Sequence.get(genome= 'mm10',chrom= 'chrM',hubUrl=hubUrl,start=4321,end=5678)
+
+print(sequence.dna)
+
+
+
+```
+
+Get DNA sequence from specified chromosome and start,end coordinates in an assembly hub genome -
+api.genome.ucsc.edu/getData/sequence?hubUrl=http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt;genome=CAST_EiJ;chrom=chr1;start=4321;end=5678
 ``` python
 from ucsc.api import Sequence 
 ```

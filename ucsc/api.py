@@ -227,6 +227,8 @@ class Track:
 
         if download:
             return response.get('dataDownloadUrl')
+
+
         if chrom is not None or hubUrl is not None:
             for key in response[self.trackName]:
                 fragmentList.append(Fragment(**key))
