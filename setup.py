@@ -1,31 +1,23 @@
-from setuptools import setup, find_packages
-import codecs
-import os
+from distutils.core import setup
 
-
-VERSION = '1.0.0'
-DESCRIPTION = 'UCSC-Genomic-REST-Api-Wrapper'
-LONG_DESCRIPTION = 'An open-source python package licensed under the MIT license, the package represents a python Api wrapper on the UCSC genomic database, which makes it much easier for researchers to access and query the database with an elegant and human readable Api.'
-
-# Setting up
 setup(
-    name="ucsc",
-    version=VERSION,
-    author="Eyadhamza",
-    author_email="eyadhamza0@outlook.com",
-    description='access and query the ucsc database with an elegant and human readable Api',
-    long_description_content_type="text/markdown",
-    long_description='An open-source python package licensed under the MIT license, the package represents a python Api wrapper on the UCSC genomic database, which makes it much easier for researchers to access and query the database with an elegant and human readable Api',
-
-    packages=find_packages(),
-    install_requires=['requests', 'urllib'],
+    name='ucsc-genomic',
+    packages=['ucsc'],
+    version='1.0.0',
+    license='MIT',
+    description='An open-source python package licensed under the MIT license, the package represents a python Api wrapper on the UCSC genomic database, which makes it much easier for researchers to access and query the database with an elegant and human readable Api',
+    author='Eyad Hamza',
+    author_email='eyadhamza0@outlook.com',
+    url='https://github.com/Eyadhamza/UCSC-Genomic-REST-Api-Wrapper',
+    download_url='https://github.com/Eyadhamza/UCSC-Genomic-REST-Api-Wrapper/releases/tag/1.0.0',
     keywords=['python', 'genomic', 'bioinformatics', 'bio', 'genomes', 'ucsc'],
+    install_requires=[
+        'requests',
+    ],
     classifiers=[
-        "Development Status :: 1 - Planning",
-        "Intended Audience :: Developers",
-        "Programming Language :: Python :: 3",
-        "Operating System :: Unix",
-        "Operating System :: MacOS :: MacOS X",
-        "Operating System :: Microsoft :: Windows",
-    ]
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Developers',
+        'Topic :: Software Development :: Build Tools',
+        'Programming Language :: Python :: 3.6',
+    ],
 )
