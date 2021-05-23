@@ -25,7 +25,7 @@ An open-source python package licensed under the MIT license, the package repres
 Install ucsc with pip
 
 ```bash 
-  pip install ucsc
+  pip install ucsc-genomic-api
 ```
 
 ## Documentation
