@@ -3,16 +3,14 @@ from ucsc.api import Genome, Track, Hub, Chromosome, Sequence
 
 
 
-hub = Hub.find('ALFA Hub')
+# hub = Hub.find('ALFA Hub')
 
-print(hub.genomes.__dict__)
-print(hub.__dict__)
+# print(hub.genomes.__dict__)
+# print(hub.__dict__)
 
 # track = Track('gold')
 #
 #
-# sequence = Sequence.get(genome = 'mm10',chrom= 'chrM')
-# print(sequence.__dict__)
 
 #Sequence.getByGenomeChrom('hg38','chrM')
 

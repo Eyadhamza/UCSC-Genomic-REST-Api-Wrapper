@@ -328,7 +328,7 @@ class Fragment:
 
 
 class Sequence:
-    def __init__(self, genome, chrom, dna=None, hub=None, track=None, start=None, end=None):
+    def __init__(self, genome, chrom, dna=None, hub=None, track=None, start=None, end=None,**kwargs):
         self.end = end
         self.start = start
         self.track = track
@@ -344,3 +344,5 @@ class Sequence:
         response = requests.get(URL, params).json()
         raiseExceptionOfRequest(response)
         return Sequence(**response)
+sequence = Sequence.get(genome = 'mm10',chrom= 'chrM')
+print(sequence.__dict__)
