@@ -11,7 +11,7 @@ setup(
     packages=['ucsc'],
     long_description=long_description,
     long_description_content_type='text/markdown',
-    version='1.0.0',
+    version='1.0.1',
     license='MIT',
     description='access and query the UCSC database with an elegant and human readable Api',
     author='Eyad Hamza',

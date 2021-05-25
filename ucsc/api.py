@@ -13,6 +13,7 @@ class NotAllowedException(Exception):
 
 
 def raiseExceptionOfRequest(response):
+    
     if response.get('statusCode') == 400:
         raise NotFoundException('Something went wrong, ' + response.get('error'))
 
@@ -288,11 +289,12 @@ class Chromosome:
     @staticmethod
     def get(hub=None, genome=None, track=None):
         URL = BASE_URL + '/list/chromosomes'
-        response = requests.get(URL, {'genome': genome, 'track': track, 'hub': hub})
+        response = requests.get(URL, {'genome': genome, 'track': track, 'hub': hub}).json()
+        
         raiseExceptionOfRequest(response)
         chromosomesList = []
-
-        for key in response.json()['chromosomes']:
+        
+        for key in response['chromosomes']:
             chromosomesList.append(Chromosome(key))
         return chromosomesList
 

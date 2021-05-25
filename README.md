@@ -283,7 +283,7 @@ List chromosomes from UCSC database genome
 ```python
 from ucsc.api import Chromosome 
 
-chromosomes = Chromosome.get('hg38')
+chromosomes = Chromosome.get(genome='hg38')
 ```
 
 List chromosomes from specified track in UCSC database genome
@@ -293,7 +293,7 @@ List chromosomes from specified track in UCSC database genome
 ```python
 from ucsc.api import Chromosome
 
-chromosomes = Chromosome.get('hg38', 'knownGene')
+chromosomes = Chromosome.get(genome='hg38', track='knownGene')
 
 # or 
 
@@ -313,10 +313,10 @@ List chromosomes from assembly hub genome
 ```python
 from ucsc.api import Chromosome 
 
-chromosomes = Chromosome.get('hg38', 'ALFA Hub')
+chromosomes = Chromosome.get(hub='ALFA Hub')
 ```
 
-List chromosomes from specified track in assembly hub genome
+List chromosomes from specified track in assembly hub genome # Deprected!
 
 
 ``` python
