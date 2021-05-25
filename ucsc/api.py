@@ -344,5 +344,3 @@ class Sequence:
         response = requests.get(URL, params).json()
         raiseExceptionOfRequest(response)
         return Sequence(**response)
-sequence = Sequence.get(genome = 'mm10',chrom= 'chrM')
-print(sequence.__dict__)
