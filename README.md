@@ -54,11 +54,65 @@ className.findBy()  # Find object by a specified attribute
 className.exists()  # Check to see if an object exists
 ```
 
-
 Then you can access the attributes of the object using . notation
 ``` python
 className.attributeName # Returns attribute name
 ```
+
+
+## Use case
+
+Suppose you want to work on and analyze Covid-19 dataset
+what precise steps you will take to accomplish the task?
+
+well, you might have an order like this:
+
+1- Retrieve all genomic data related to Covid-19, such as
+track data, sequence data …etc
+
+2- Build your algorithm to apply some computations on the data you just retrieved
+
+The package focuses on helping you retrieve the data faster, and
+keep your focus on the algorithm itself, you don't want to make a dozen of
+get requests and go back and forth to the api, 
+you will find yourself focusing on the details of getting the data rather than working on it!
+
+To demonstrate my purpose here, let's see how fast you can get started!
+
+Step one: From the UCSC Datasets, you found out that the assembly name of Covid-19 is wuhCor1
+
+Step two: You now want to get its data, let's do it! :
+
+```python
+from ucsc.api import Genome  
+
+# get the wuhCor1 from the UCSC database and return a python object
+genome = Genome.find('wuhCor1')
+
+# wanna access the attributes?
+print(genome.name)
+print(genome.organism)
+print(genome.__dict__) # to return all attributes in the object
+
+
+# want to get the tracks?
+tracks = genome.tracks
+
+# you can also loop over the tracks, which is basically a list of objects
+# you can also find specific track using the given methods!
+
+track = genome.findTrack('nameOfTheTrack') 
+
+# don't know the name? 
+# don't be nervous, you can access it using any attribute
+track = genome.findTrackBy('url','trackUrl')
+
+# you now have a track object, you want to get all it's related data?
+# i mean you wanna state it's chromosomes, other info (useful if uou wanna build your own genome browser)
+sequence = track.getTrackData()
+
+```
+
 
 
 

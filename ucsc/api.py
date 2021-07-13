@@ -34,7 +34,6 @@ class Model:
     def makeGetRequest(cls):
 
         response = requests.get(cls.requestUrl, cls.requestParams).json()
-
         raiseExceptionOfRequest(response)
         return response
 

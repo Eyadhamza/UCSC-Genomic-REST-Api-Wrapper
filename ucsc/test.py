@@ -1,11 +1,24 @@
+import requests
+
 from ucsc.api import Genome, Track, Hub, Chromosome, Sequence
 
 
-genome = Genome.findBy('name', 'hg38asdasd')
-tracks = genome.tracks
+# genome = Genome.findBy('name', 'hg38asdasd')
+# tracks = genome.tracks
+#
+# for track in tracks:
+#     print(track.__dict__)
 
-for track in tracks:
-    print(track.__dict__)
+response = requests.get('http://api.genome.ucsc.edu/list/ucscGenomes').json()
+genome = ''
+for key in response:
+    if key == 'wuhCor1':
+        genome = key
+    else:
+        genome = ''
+# well, you found it, you made sure it exists
+
+
 
 # hub = Hub.findBy('name','ALFA Hub')
 #
