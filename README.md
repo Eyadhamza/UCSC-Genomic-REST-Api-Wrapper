@@ -84,7 +84,7 @@ Step one: From the UCSC Datasets, you found out that the assembly name of Covid-
 Step two: You now want to get its data, let's do it! :
 
 ```python
-from ucsc.api import Genome  
+from ucsc.api import Genome,Sequence
 
 # get the wuhCor1 from the UCSC database and return a python object
 genome = Genome.find('wuhCor1')
@@ -121,11 +121,30 @@ track.getTrackData(genome='wuhCor1', chrom='chr1')
 
 track.downloadData(genome='wuhCor1', chrom='chr1', hubUrl=hubUrl, start=4321, end=5678)
 
+# You studied the track data, you analyzed chromosomes, you want to get a 
+# Sequence data from a given chromosome..
 
+sequence = Sequence.get(genome = 'wuhCor1',chrom= 'chrM')
+
+print(sequence.dna)
+
+# Get DNA sequence from specified chromosome and start,end coordinates in UCSC database genome -
+
+sequence = Sequence.get(genome= 'wuhCor1',chrom= 'chrM',start=4321,end=5678)
+
+print(sequence.dna)
+
+# process any of the data you just retrieved and saved to variables
+# code!
 
 ```
 
+As you can see with just a few lines of code you were able to retrieve everything in matter of seconds.
 
+No need to learn and study the api, no need to make get requests, encounter errors and handling them..
+that doesn't even relate to what you are actually working on!
+
+Saved you sometime that you can use to build your tool!
 
 
     
