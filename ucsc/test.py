@@ -1,7 +1,7 @@
 from ucsc.api import Genome, Track, Hub, Chromosome, Sequence
 
 
-genome = Genome.findBy('name', 'hg38')
+genome = Genome.findBy('name', 'hg38asdasd')
 tracks = genome.tracks
 
 for track in tracks:

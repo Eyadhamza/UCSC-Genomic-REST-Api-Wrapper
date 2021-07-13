@@ -56,6 +56,10 @@ class MyTestCase(unittest.TestCase):
         track2 = genome.findTrackBy('name','gold')
         self.assertIsInstance(track2, Track)
 
+    def test_it_can_get_track_data_of_a_chromosome(self):
+        chromosome = Chromosome.find('chr1', genome='hg38', track='gold')
+
+
     def test_it_can_get_schema_of_track(self):
         track = Track.find('gold','hg38')
         self.assertIsInstance(track.schema,list)
@@ -71,6 +75,7 @@ class MyTestCase(unittest.TestCase):
     def test_it_returns_a_chromosome_by_name(self):
         chromosomes = Chromosome.find('chr1',genome='hg38',track='gold')
         self.assertIsInstance(chromosomes,Chromosome)
+
 
 
 if __name__ == '__main__':

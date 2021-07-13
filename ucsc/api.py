@@ -31,10 +31,15 @@ class Model:
     responseKey = ''
 
     @classmethod
-    def get(cls, *param):
+    def makeGetRequest(cls):
+
         response = requests.get(cls.requestUrl, cls.requestParams).json()
         raiseExceptionOfRequest(response)
+        return response
 
+    @classmethod
+    def get(cls, *param):
+        response = cls.makeGetRequest()
         myList = []
         for key in response[cls.responseKey]:
             if type(key) is dict:
@@ -48,14 +53,14 @@ class Model:
         for item in cls.get(*param):
             if item.name == name:
                 return item
-        raise NotFoundException("can't find hub, Hub does not exist")
+        raise NotFoundException("can't find" + name + " in the list of " + item.__class__.__name__ + "s it does not exist")
 
     @classmethod
     def findBy(cls, itemAttribute, value, *param):
         for item in cls.get(*param):
             if getattr(item, itemAttribute) == value:
                 return item
-        raise NotFoundException("can't find hub, Hub does not exist")
+        raise NotFoundException("can't find" + value + " in the list of " + item.__class__.__name__ + "s it does not exist")
 
     @classmethod
     def exists(cls, name, *param):
@@ -273,7 +278,8 @@ class Chromosome(Model):
 
     @classmethod
     def find(cls, name, hub=None, genome=None, track=None):
-        return super().find(name,hub,genome,track)
+        return super().find(name, hub, genome, track)
+
 
 class Fragment:
     def __init__(self, **kwargs):
@@ -290,6 +296,10 @@ class Fragment:
 
 
 class Sequence:
+    requestUrl = ''
+    requestParams = {}
+    responseKey = ''
+
     def __init__(self, genome, chrom, dna=None, hub=None, track=None, start=None, end=None):
         self.end = end
         self.start = start
@@ -299,10 +309,10 @@ class Sequence:
         self.dna = dna
         self.genome = genome
 
-    @staticmethod
-    def get(genome, chrom, hubUrl=None, start=None, end=None):
-        URL = BASE_URL + '/getData/sequence'
-        params = {'hubUrl': hubUrl, 'genome': genome, 'chrom': chrom, 'start': start, 'end': end}
-        response = requests.get(URL, params).json()
+    @classmethod
+    def get(cls, genome, chrom, hubUrl=None, start=None, end=None):
+        cls.requestUrl = BASE_URL + '/getData/sequence'
+        cls.requestParams = {'hubUrl': hubUrl, 'genome': genome, 'chrom': chrom, 'start': start, 'end': end}
+        response = requests.get(cls.requestUrl, cls.requestParams).json()
         raiseExceptionOfRequest(response)
         return Sequence(**response)
