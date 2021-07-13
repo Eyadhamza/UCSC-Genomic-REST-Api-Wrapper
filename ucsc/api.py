@@ -51,17 +51,15 @@ class Hub:
     def find(hubName):
         for hub in Hub.get():
             if hub.name == hubName:
-                print('hub found')
                 return hub
-        raise Exception("can't find hub, Hub does not exist")
+        raise NotFoundException("can't find hub, Hub does not exist")
 
     @staticmethod
     def findBy(hubAttribute, value):
         for hub in Hub.get():
             if getattr(hub, hubAttribute) == value:
-                print('hub found')
                 return hub
-        raise Exception("can't find hub, Hub does not exist")
+        raise NotFoundException("can't find hub, Hub does not exist")
 
     @property
     def genomes(self):
