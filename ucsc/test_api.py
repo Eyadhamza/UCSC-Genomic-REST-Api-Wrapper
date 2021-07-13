@@ -37,11 +37,11 @@ class MyTestCase(unittest.TestCase):
             Genome.find('hsssg38')
 
     def test_it_can_find_a_genome_by_attribute_if_it_exists(self):
-        genome = Genome.findBy('genomeName','hg38')
+        genome = Genome.findBy('name','hg38')
         self.assertIsInstance(genome, Genome)
 
         with self.assertRaises(NotFoundException):
-            Genome.findBy('genomeName','hsssg38')
+            Genome.findBy('name','hsssg38')
 
     def test_it_can_get_tracks_of_genome(self):
         genome = Genome.findBy('genomeName', 'hg38')

@@ -101,8 +101,6 @@ class Genome(Model):
     responseKey = ''
 
     def __init__(self, name, **kwargs):
-
-
         self.name = name
         self.genome = kwargs.get('genome')
         self.taxId = kwargs.get('taxId')
@@ -140,20 +138,6 @@ class Genome(Model):
     def isTrackExists(self, trackName):
         return Track.exists(self.name, trackName)
 
-    @staticmethod
-    def find(name):
-        for genome in Genome.get():
-            if genome.name == name:
-                return genome
-        raise NotFoundException("can't find genome, Genome does not exist")
-
-    @staticmethod
-    def findBy(genomeAttribute, value):
-        for genome in Genome.get():
-            if getattr(genome, genomeAttribute) == value:
-                return genome
-        raise NotFoundException("can't find genome, Genome does not exist")
-
     @classmethod
     def getKeyOfResponse(cls, hubUrl):
         return 'ucscGenomes' if hubUrl is None else 'genomes'
@@ -162,15 +146,9 @@ class Genome(Model):
     def getUrl(cls, hubUrl):
         return 'ucscGenomes' if hubUrl is None else 'hubGenomes'
 
-
-
-# Genome.findBy('genomeName','PWK_PhJ')
-
 class Track:
-    def __init__(self, trackName, **kwargs):
-        # fetch the track based on name
-        # return the track as an object with all required attributes
-        self.trackName = trackName
+    def __init__(self, name, **kwargs):
+        self.name = name
         self.caddT = kwargs.get('caddT')
         self.superTrack = kwargs.get('superTrack')
         self.maxWindowToDraw = kwargs.get('maxWindowToDraw')
