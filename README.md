@@ -222,55 +222,53 @@ trackSchema = track.schema('hg38')
 ```
 
 Get track data depends on the parameter you will pass to the trackData function, listed below the possible parameter for each use case
-```python
-from ucsc.api import Track 
 
-track = Track.find('hg38','knownGene') # or you can get the track using the findBy method
+```python
+from ucsc.api import Track
+
+track = Track.find('hg38', 'knownGene')  # or you can get the track using the findBy method
 
 # Get track data for specified track in UCSC database genome 
 
-track.trackData(genome='hg38',track='gold',maxItemsOutput=100)
+track.getTrackData(genome='hg38', track='gold', maxItemsOutput=100)
 
 # Get track data for specified track and chromosome in UCSC database genome 
 
-track.trackData(genome='hg38',track='gold',chrom='chrM')
+track.getTrackData(genome='hg38', track='gold', chrom='chrM')
 
 # Get track data for specified track, chromosome and start,end coordinates in UCSC database genome 
 
-track.trackData(genome='hg38',track='gold',chrom='chr1',start=47000,end=48000)
+track.getTrackData(genome='hg38', track='gold', chrom='chr1', start=47000, end=48000)
 
 # Get track data for specified track in an assembly hub genome -
-hubUrl='http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt'
+hubUrl = 'http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt'
 
-track.trackData(genome='CAST_EiJ',track='assembly',hubUrl=hubUrl)
-
+track.getTrackData(genome='CAST_EiJ', track='assembly', hubUrl=hubUrl)
 
 # Get track data for specified track and chromosome in an assembly hub genome 
-hubUrl='http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt'
+hubUrl = 'http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt'
 
-track.trackData(genome='CAST_EiJ',track='assembly',chrom='chr1',hubUrl=hubUrl)
+track.getTrackData(genome='CAST_EiJ', track='assembly', chrom='chr1', hubUrl=hubUrl)
 
 # Get track data for specified track in a track hub -
 
-hubUrl='http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt'
+hubUrl = 'http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt'
 
-track.trackData(genome='CAST_EiJ',track='ensGene',hubUrl=hubUrl)
-
+track.getTrackData(genome='CAST_EiJ', track='ensGene', hubUrl=hubUrl)
 
 # Get track data for specified track and chromosome in a track hub 
 
-hubUrl='http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt'
+hubUrl = 'http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt'
 
-track.trackData(genome='CAST_EiJ',track='ensGene',chrom='chr1',hubUrl=hubUrl)
-
+track.getTrackData(genome='CAST_EiJ', track='ensGene', chrom='chr1', hubUrl=hubUrl)
 
 # Download track data for specified track, chromosome with start and end limits in an assembly hub genome -
-hubUrl='http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt'
+hubUrl = 'http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt'
 
-track.downloadData(genome='CAST_EiJ',track='ensGene',chrom='chr1',hubUrl=hubUrl,start=4321,end=5678)
+track.downloadData(genome='CAST_EiJ', track='ensGene', chrom='chr1', hubUrl=hubUrl, start=4321, end=5678)
 
 # Download track data for specified track in a UCSC database genome 
-track.downloadData(genome='galGal6',track='gc5BaseBw',maxItemsOutput=100)
+track.downloadData(genome='galGal6', track='gc5BaseBw', maxItemsOutput=100)
 
 ```
 

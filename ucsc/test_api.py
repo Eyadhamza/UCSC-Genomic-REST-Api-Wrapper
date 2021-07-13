@@ -1,6 +1,6 @@
 import unittest
 
-from ucsc.api import Hub, NotFoundException, Genome, Track
+from ucsc.api import Hub, NotFoundException, Genome, Track, TrackSchema, Chromosome
 
 
 class MyTestCase(unittest.TestCase):
@@ -55,6 +55,22 @@ class MyTestCase(unittest.TestCase):
         self.assertIsInstance(track, Track)
         track2 = genome.findTrackBy('name','gold')
         self.assertIsInstance(track2, Track)
+
+    def test_it_can_get_schema_of_track(self):
+        track = Track.find('gold','hg38')
+        self.assertIsInstance(track.schema,list)
+
+    def test_it_returns_a_list_of_all_chromosomes(self):
+        chromosomes = Chromosome.get(genome='hg38',track='gold')
+        self.assertIsInstance(chromosomes,list)
+
+    def test_it_checks_if_chromosome_exists(self):
+        self.assertTrue(Chromosome.exists('chr1',genome='hg38',track='gold'))
+        self.assertFalse(Chromosome.exists('cr1',genome='hg38',track='gold'))
+
+    def test_it_returns_a_chromosome_by_name(self):
+        chromosomes = Chromosome.find('chr1',genome='hg38',track='gold')
+        self.assertIsInstance(chromosomes,Chromosome)
 
 
 if __name__ == '__main__':

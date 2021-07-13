@@ -31,7 +31,7 @@ class Model:
     responseKey = ''
 
     @classmethod
-    def get(cls,*param):
+    def get(cls, *param):
         response = requests.get(cls.requestUrl, cls.requestParams).json()
         raiseExceptionOfRequest(response)
 
@@ -79,18 +79,6 @@ class Hub(Model):
         self.dbList = kwargs.get('dbList')
         self.descriptionUrl = kwargs.get('descriptionUrl')
 
-    @classmethod
-    def get(cls):
-        return super().get()
-
-    @classmethod
-    def find(cls, name):
-        return super().find(name)
-
-    @classmethod
-    def findBy(cls, itemAttribute, value):
-        return super().findBy(itemAttribute, value)
-
     @property
     def genomes(self):
         return Genome.get(self.hubUrl)
@@ -118,9 +106,7 @@ class Genome(Model):
         self.description = kwargs.get('description')
 
     @classmethod
-    def get(cls, hubUrl = None):
-
-
+    def get(cls, hubUrl=None):
         Genome.requestUrl = BASE_URL + f'/list/{Genome.getUrl(hubUrl)}'
         Genome.requestParams = {'hubUrl': hubUrl}
         Genome.responseKey = Genome.getKeyOfResponse(hubUrl)
@@ -131,13 +117,13 @@ class Genome(Model):
         return Track.get(self.name)
 
     def findTrack(self, trackName):
-        return Track.find( trackName, self.name)
+        return Track.find(trackName, self.name)
 
     def findTrackBy(self, attributeName, trackName):
-        return Track.findBy(attributeName, trackName,self.name)
+        return Track.findBy(attributeName, trackName, self.name)
 
     def isTrackExists(self, trackName):
-        return Track.exists(trackName,self.name)
+        return Track.exists(trackName, self.name)
 
     @classmethod
     def getKeyOfResponse(cls, hubUrl):
@@ -152,6 +138,7 @@ class Track(Model):
     requestUrl = ''
     requestParams = {}
     responseKey = ''
+    genome = ''
 
     def __init__(self, name, **kwargs):
         self.name = name
@@ -189,27 +176,29 @@ class Track(Model):
         self.type = kwargs.get('type')
         self.shortLabel = kwargs.get('shortLabel')
 
-
     @classmethod
     def get(cls, genomeName):
         Track.requestUrl = BASE_URL + '/list/tracks'
         Track.requestParams = {'genome': genomeName}
         Track.responseKey = genomeName
+        Track.genome = genomeName
         return super().get()
 
-    def schema(self, genomeName):
-        return TrackSchema.get(genomeName, self.trackName)
+    @property
+    def schema(self):
+        return TrackSchema.get(self.genome, self.name)
 
-    def trackData(self, genome, chrom=None, chromStart=None, chromEnd=None, hubUrl=None, maxItemsOutput=None,
-                  download=False):
-        URL = BASE_URL + '/getData/track'
+    def getTrackData(self, genome, chrom=None, chromStart=None, chromEnd=None, hubUrl=None, maxItemsOutput=None,
+                     download=False):
 
-        params = {'genome': genome, 'track': self.trackName,
+        self.requestUrl = BASE_URL + '/getData/track'
+
+        params = {'genome': genome, 'track': self.name,
                   'maxItemsOutput': maxItemsOutput,
                   'chrom': chrom, 'chromStart': chromStart,
                   'chromEnd': chromEnd, 'hubUrl': hubUrl}
 
-        response = requests.get(URL, params).json()
+        response = requests.get(self.requestUrl, params).json()
 
         raiseExceptionOfRequest(response)
 
@@ -220,24 +209,24 @@ class Track(Model):
             return response.get('dataDownloadUrl')
 
         if chrom is not None or hubUrl is not None:
-            for key in response[self.trackName]:
+            for key in response[self.name]:
                 fragmentList.append(Fragment(**key))
             return fragmentList
 
-        for key in response[self.trackName]:
+        for key in response[self.name]:
             chromList.append(Chromosome(key))
             for chromosome in chromList:
-                print(chromosome.chromosomeName)
-                for fragment in response[self.trackName][chromosome.chromosomeName]:
+                print(chromosome.name)
+                for fragment in response[self.name][chromosome.name]:
                     fragmentList.append(Fragment(**fragment))
         return fragmentList
 
     def downloadData(self, genome, chrom=None, chromStart=None, chromEnd=None, hubUrl=None, maxItemsOutput=None,
                      filename=None):
 
-        url = self.trackData(genome, chrom, chromStart, chromEnd, hubUrl, maxItemsOutput, download=True)
+        url = self.getTrackData(genome, chrom, chromStart, chromEnd, hubUrl, maxItemsOutput, download=True)
 
-        filename = genome + '_' + self.trackName + '.zip' if filename is None else filename
+        filename = genome + '_' + self.name + '.zip' if filename is None else filename
 
         urllib.request.urlretrieve(url, filename)
 
@@ -260,37 +249,31 @@ class TrackSchema:
         return schemaList
 
 
-class Chromosome:
-    def __init__(self, chromosomeName):
-        self.chromosomeName = chromosomeName
+class Chromosome(Model):
+    requestUrl = ''
+    requestParams = {}
+    responseKey = ''
 
-    @staticmethod
-    def get(hub=None, genome=None, track=None):
-        URL = BASE_URL + '/list/chromosomes'
-        response = requests.get(URL, {'genome': genome, 'track': track, 'hub': hub})
+    def __init__(self, name):
+        self.name = name
+
+    @classmethod
+    def get(cls, hub=None, genome=None, track=None):
+        cls.requestUrl = BASE_URL + '/list/chromosomes'
+        cls.requestParams = {'genome': genome, 'track': track, 'hub': hub}
+        cls.responseKey = 'chromosomes'
+        response = requests.get(cls.requestUrl, cls.requestParams).json()
         raiseExceptionOfRequest(response)
-        chromosomesList = []
 
-        for key in response.json()['chromosomes']:
-            chromosomesList.append(Chromosome(key))
-        return chromosomesList
+        return super().get()
 
-    @staticmethod
-    def exists(chromosomeName, hub=None, genome=None, track=None):
-        for chromosome in Chromosome.get(hub, genome, track):
-            if chromosome.chromosomeName == chromosomeName:
-                return True
+    @classmethod
+    def exists(cls, name, hub=None, genome=None, track=None):
+        return super().exists(name, hub, genome, track)
 
-        return False
-
-    @staticmethod
-    def find(chromosomeName, hub=None, genome=None, track=None):
-        for chromosome in Chromosome.get(hub, genome, track):
-            if chromosome.chromosomeName == chromosomeName:
-                return chromosome
-
-        raise Exception("can't find chromosome, Chromosome does not exist")
-
+    @classmethod
+    def find(cls, name, hub=None, genome=None, track=None):
+        return super().find(name,hub,genome,track)
 
 class Fragment:
     def __init__(self, **kwargs):
