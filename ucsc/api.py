@@ -329,7 +329,7 @@ class Sequence:
     requestParams = {}
     responseKey = ''
 
-    def __init__(self, genome, chrom, dna=None, hub=None, track=None, start=None, end=None):
+    def __init__(self, genome, chrom, dna=None, hub=None, track=None, start=None, end=None,**kwargs):
         self.end = end
         self.start = start
         self.track = track

@@ -84,7 +84,8 @@ Step one: From the UCSC Datasets, you found out that the assembly name of Covid-
 Step two: You now want to get its data, let's do it! :
 
 ```python
-from ucsc.api import Genome,Sequence
+
+from ucsc.api import Genome, Sequence
 
 # get the wuhCor1 from the UCSC database and return a python object
 genome = Genome.find('wuhCor1')
@@ -98,39 +99,46 @@ print(genome.__dict__) # to return all attributes in the object
 # want to get the tracks?
 tracks = genome.tracks
 
+# wanna see details of tracks object
+for track in tracks:
+    print(track.__dict__)
+
 # you can also loop over the tracks, which is basically a list of objects
 # you can also find specific track using the given methods!
+# you noticed a track named microdel, you wanna know more about it
+track = genome.findTrack('microdel')
 
-track = genome.findTrack('nameOfTheTrack') 
 
-# don't know the name? 
+# don't know the name?
 # don't be nervous, you can access it using any attribute
-track = genome.findTrackBy('url','trackUrl')
+
+track = genome.findTrackBy('shortLabel','Microdeletions')
 
 # you now have a track object, you want to get all it's related data?
-# i mean you wanna state it's chromosomes, other info (useful if uou wanna build your own genome browser)
+# i mean you wanna get all its fragments
 
-sequence = track.getTrackData(genome='wuhCor1')
+trackFragments = track.getTrackData(genome='wuhCor1')
+
+print(trackFragments[0].__dict__) # you get the details of fragment object
 
 # Get track data for specified track and chromosome in wuhCor1
 # You can also specify other flags, check usage for more details.
 
-track.getTrackData(genome='wuhCor1', chrom='chr1')
+chromosomeFragment = track.getTrackData(genome='wuhCor1', chrom='NC_045512v2')
 
 # Wanna download them for offline processing?
+track.downloadData(genome='wuhCor1', chrom='NC_045512v2')
 
-track.downloadData(genome='wuhCor1', chrom='chr1', hubUrl=hubUrl, start=4321, end=5678)
-
-# You studied the track data, you analyzed chromosomes, you want to get a 
+# You studied the track data, you analyzed chromosomes, you want to get a
 # Sequence data from a given chromosome..
 
-sequence = Sequence.get(genome = 'wuhCor1',chrom= 'chrM')
+sequence = Sequence.get(genome='wuhCor1',chrom= 'NC_045512v2')
 
 print(sequence.dna)
 
 # Get DNA sequence from specified chromosome and start,end coordinates in UCSC database genome -
 
-sequence = Sequence.get(genome= 'wuhCor1',chrom= 'chrM',start=4321,end=5678)
+sequence = Sequence.get(genome= 'wuhCor1',chrom= 'NC_045512v2',start=4321,end=5678)
 
 print(sequence.dna)
 
@@ -443,7 +451,7 @@ print(sequence.dna)
 
 # Get DNA sequence from a track hub where 'genome' is a UCSC database -
 
-hubUrl = 'http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt';
+hubUrl = 'http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt'
 
 sequence = Sequence.get(genome= 'mm10',chrom= 'chrM',hubUrl=hubUrl,start=4321,end=5678)
 
