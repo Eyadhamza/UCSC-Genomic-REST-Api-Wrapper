@@ -44,21 +44,21 @@ class Model:
         return myList
 
     @classmethod
-    def find(cls, name):
-        for item in cls.get():
+    def find(cls, name, *param):
+        for item in cls.get(*param):
             if item.name == name:
                 return item
         raise NotFoundException("can't find hub, Hub does not exist")
 
     @classmethod
-    def findBy(cls, itemAttribute, value):
-        for item in cls.get():
+    def findBy(cls, itemAttribute, value, *param):
+        for item in cls.get(*param):
             if getattr(item, itemAttribute) == value:
                 return item
         raise NotFoundException("can't find hub, Hub does not exist")
 
     @classmethod
-    def exists(cls, name,*param):
+    def exists(cls, name, *param):
 
         for item in cls.get(*param):
             if item.name == name:
@@ -118,9 +118,8 @@ class Genome(Model):
         self.description = kwargs.get('description')
 
     @classmethod
-    def get(cls, *param):
+    def get(cls, hubUrl = None):
 
-        hubUrl = None if len(param) == 0 else param[0]
 
         Genome.requestUrl = BASE_URL + f'/list/{Genome.getUrl(hubUrl)}'
         Genome.requestParams = {'hubUrl': hubUrl}
@@ -132,13 +131,13 @@ class Genome(Model):
         return Track.get(self.name)
 
     def findTrack(self, trackName):
-        return Track.find(self.name, trackName)
+        return Track.find( trackName, self.name)
 
     def findTrackBy(self, attributeName, trackName):
-        return Track.findBy(self.name, attributeName, trackName)
+        return Track.findBy(attributeName, trackName,self.name)
 
     def isTrackExists(self, trackName):
-        return Track.exists(self.name, trackName)
+        return Track.exists(trackName,self.name)
 
     @classmethod
     def getKeyOfResponse(cls, hubUrl):
@@ -153,6 +152,7 @@ class Track(Model):
     requestUrl = ''
     requestParams = {}
     responseKey = ''
+
     def __init__(self, name, **kwargs):
         self.name = name
         self.caddT = kwargs.get('caddT')
@@ -189,38 +189,13 @@ class Track(Model):
         self.type = kwargs.get('type')
         self.shortLabel = kwargs.get('shortLabel')
 
-    @staticmethod
-    def exists(genomeName, trackName):
-        for track in Track.get(genomeName):
-            if track.trackName == trackName:
-                return True
 
-        return False
-
-    @staticmethod
-    def get(genomeName):
-        response = requests.get(BASE_URL + '/list/tracks', {'genome': genomeName}).json()
-
-        raiseExceptionOfRequest(response)
-        trackList = []
-        for key in response[genomeName]:
-            trackList.append(Track(key, **response[genomeName][key]))
-        return trackList
-
-    @staticmethod
-    def find(genomeName, trackName):
-        for track in Track.get(genomeName):
-            if track.trackName == trackName:
-                return track
-        raise Exception("can't find track, Track does not exist")
-
-    @staticmethod
-    def findBy(genomeName, trackAttribute, value):
-        for track in Track.get(genomeName):
-            if getattr(track, trackAttribute) == value:
-                print('track found')
-                return track
-        raise Exception("can't find track, Track does not exist")
+    @classmethod
+    def get(cls, genomeName):
+        Track.requestUrl = BASE_URL + '/list/tracks'
+        Track.requestParams = {'genome': genomeName}
+        Track.responseKey = genomeName
+        return super().get()
 
     def schema(self, genomeName):
         return TrackSchema.get(genomeName, self.trackName)

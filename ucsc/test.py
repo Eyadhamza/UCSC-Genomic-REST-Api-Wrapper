@@ -1,8 +1,15 @@
 from ucsc.api import Genome, Track, Hub, Chromosome, Sequence
 
-hub = Hub.findBy('name','ALFA Hub')
 
-print(hub.__dict__)
+genome = Genome.findBy('name', 'hg38')
+tracks = genome.tracks
+
+for track in tracks:
+    print(track.__dict__)
+
+# hub = Hub.findBy('name','ALFA Hub')
+#
+# print(hub.__dict__)
 #
 # hubs = Hub.get()
 # for i in hubs:

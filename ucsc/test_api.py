@@ -56,5 +56,6 @@ class MyTestCase(unittest.TestCase):
         track2 = genome.findTrackBy('name','gold')
         self.assertIsInstance(track2, Track)
 
+
 if __name__ == '__main__':
     unittest.main()
