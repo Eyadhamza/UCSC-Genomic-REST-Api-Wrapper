@@ -109,7 +109,19 @@ track = genome.findTrackBy('url','trackUrl')
 
 # you now have a track object, you want to get all it's related data?
 # i mean you wanna state it's chromosomes, other info (useful if uou wanna build your own genome browser)
-sequence = track.getTrackData()
+
+sequence = track.getTrackData(genome='wuhCor1')
+
+# Get track data for specified track and chromosome in wuhCor1
+# You can also specify other flags, check usage for more details.
+
+track.getTrackData(genome='wuhCor1', chrom='chr1')
+
+# Wanna download them for offline processing?
+
+track.downloadData(genome='wuhCor1', chrom='chr1', hubUrl=hubUrl, start=4321, end=5678)
+
+
 
 ```
 
@@ -284,15 +296,15 @@ track = Track.find('hg38', 'knownGene')  # or you can get the track using the fi
 
 # Get track data for specified track in UCSC database genome 
 
-track.getTrackData(genome='hg38', track='gold', maxItemsOutput=100)
+track.getTrackData(genome='hg38', maxItemsOutput=100)
 
 # Get track data for specified track and chromosome in UCSC database genome 
 
-track.getTrackData(genome='hg38', track='gold', chrom='chrM')
+track.getTrackData(genome='hg38', chrom='chrM')
 
 # Get track data for specified track, chromosome and start,end coordinates in UCSC database genome 
 
-track.getTrackData(genome='hg38', track='gold', chrom='chr1', start=47000, end=48000)
+track.getTrackData(genome='hg38', chrom='chr1', start=47000, end=48000)
 
 # Get track data for specified track in an assembly hub genome -
 hubUrl = 'http://hgdownload.soe.ucsc.edu/hubs/mouseStrains/hub.txt'
