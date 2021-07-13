@@ -29,7 +29,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_it_can_find_a_genome_by_name_if_it_exists(self):
 
-        self.assertTrue(Genome.exists('hg38'))
+        self.assertTrue(Genome.exists('hg38','https://ftp.ncbi.nlm.nih.gov/snp/population_frequency/TrackHub/20200227123210/hub.txt'))
         genome = Genome.find('hg38')
         self.assertIsInstance(genome, Genome)
 
@@ -44,16 +44,16 @@ class MyTestCase(unittest.TestCase):
             Genome.findBy('name','hsssg38')
 
     def test_it_can_get_tracks_of_genome(self):
-        genome = Genome.findBy('genomeName', 'hg38')
+        genome = Genome.findBy('name', 'hg38')
         tracks = genome.tracks
         self.assertIsInstance(tracks, list)
 
     def test_it_can_get_a_track_of_genome(self):
-        genome = Genome.findBy('genomeName', 'hg38')
+        genome = Genome.findBy('name', 'hg38')
         self.assertTrue(genome.isTrackExists('gold'))
         track = genome.findTrack('gold')
         self.assertIsInstance(track, Track)
-        track2 = genome.findTrackBy('trackName','gold')
+        track2 = genome.findTrackBy('name','gold')
         self.assertIsInstance(track2, Track)
 
 if __name__ == '__main__':

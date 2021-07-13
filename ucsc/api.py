@@ -31,8 +31,8 @@ class Model:
     responseKey = ''
 
     @classmethod
-    def get(cls):
-        response = requests.get(cls.requestUrl,cls.requestParams).json()
+    def get(cls,*param):
+        response = requests.get(cls.requestUrl, cls.requestParams).json()
         raiseExceptionOfRequest(response)
 
         myList = []
@@ -44,7 +44,7 @@ class Model:
         return myList
 
     @classmethod
-    def find(cls,name):
+    def find(cls, name):
         for item in cls.get():
             if item.name == name:
                 return item
@@ -58,8 +58,9 @@ class Model:
         raise NotFoundException("can't find hub, Hub does not exist")
 
     @classmethod
-    def exists(cls, name):
-        for item in cls.get():
+    def exists(cls, name,*param):
+
+        for item in cls.get(*param):
             if item.name == name:
                 return True
         return False
@@ -83,7 +84,7 @@ class Hub(Model):
         return super().get()
 
     @classmethod
-    def find(cls,name):
+    def find(cls, name):
         return super().find(name)
 
     @classmethod
@@ -117,13 +118,14 @@ class Genome(Model):
         self.description = kwargs.get('description')
 
     @classmethod
-    def get(cls, hubUrl=None):
+    def get(cls, *param):
+
+        hubUrl = None if len(param) == 0 else param[0]
+
         Genome.requestUrl = BASE_URL + f'/list/{Genome.getUrl(hubUrl)}'
         Genome.requestParams = {'hubUrl': hubUrl}
         Genome.responseKey = Genome.getKeyOfResponse(hubUrl)
         return super().get()
-
-
 
     @property
     def tracks(self):
@@ -146,7 +148,11 @@ class Genome(Model):
     def getUrl(cls, hubUrl):
         return 'ucscGenomes' if hubUrl is None else 'hubGenomes'
 
-class Track:
+
+class Track(Model):
+    requestUrl = ''
+    requestParams = {}
+    responseKey = ''
     def __init__(self, name, **kwargs):
         self.name = name
         self.caddT = kwargs.get('caddT')
