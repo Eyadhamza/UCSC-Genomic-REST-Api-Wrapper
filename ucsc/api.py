@@ -25,9 +25,49 @@ def raiseExceptionOfRequest(response):
     pass
 
 
-class Hub:
-    request = BASE_URL + '/list/publicHubs'
-    key = 'publicHubs'
+class Model:
+    requestUrl = ''
+    requestParams = {}
+    responseKey = ''
+
+    @classmethod
+    def get(cls):
+        response = requests.get(cls.requestUrl,cls.requestParams).json()
+        raiseExceptionOfRequest(response)
+
+        myList = []
+        for key in response[cls.responseKey]:
+            if type(key) is dict:
+                myList.append(cls(**key))
+            else:
+                myList.append(cls(key))
+        return myList
+
+    @classmethod
+    def find(cls,name):
+        for item in cls.get():
+            if item.name == name:
+                return item
+        raise NotFoundException("can't find hub, Hub does not exist")
+
+    @classmethod
+    def findBy(cls, itemAttribute, value):
+        for item in cls.get():
+            if getattr(item, itemAttribute) == value:
+                return item
+        raise NotFoundException("can't find hub, Hub does not exist")
+
+    @classmethod
+    def exists(cls, name):
+        for item in cls.get():
+            if item.name == name:
+                return True
+        return False
+
+
+class Hub(Model):
+    requestUrl = BASE_URL + '/list/publicHubs'
+    responseKey = 'publicHubs'
 
     def __init__(self, **kwargs):
         self.name = kwargs.get('shortLabel')
@@ -38,40 +78,33 @@ class Hub:
         self.dbList = kwargs.get('dbList')
         self.descriptionUrl = kwargs.get('descriptionUrl')
 
-    @staticmethod
-    def get():
-        response = requests.get(Hub.request).json()
-        raiseExceptionOfRequest(response)
-        myList = []
-        for key in response[Hub.key]:
-            myList.append(Hub(**key))
-        return myList
+    @classmethod
+    def get(cls):
+        return super().get()
 
-    @staticmethod
-    def find(hubName):
-        for hub in Hub.get():
-            if hub.name == hubName:
-                return hub
-        raise NotFoundException("can't find hub, Hub does not exist")
+    @classmethod
+    def find(cls,name):
+        return super().find(name)
 
-    @staticmethod
-    def findBy(hubAttribute, value):
-        for hub in Hub.get():
-            if getattr(hub, hubAttribute) == value:
-                return hub
-        raise NotFoundException("can't find hub, Hub does not exist")
+    @classmethod
+    def findBy(cls, itemAttribute, value):
+        return super().findBy(itemAttribute, value)
 
     @property
     def genomes(self):
         return Genome.get(self.hubUrl)
 
 
-class Genome:
-    def __init__(self, genomeName, **kwargs):
+class Genome(Model):
+    requestUrl = ''
+    requestParams = {}
+    responseKey = ''
 
-        self.genomeName = genomeName
+    def __init__(self, name, **kwargs):
+
+
+        self.name = name
         self.genome = kwargs.get('genome')
-        # call to find genome
         self.taxId = kwargs.get('taxId')
         self.sourceName = kwargs.get('sourceName')
         self.hgPbOk = kwargs.get('hgPbOk')
@@ -85,61 +118,50 @@ class Genome:
         self.organism = kwargs.get('organism')
         self.description = kwargs.get('description')
 
-        # fetch the genome based on name
-        # return the genome as an object with all required attributes
+    @classmethod
+    def get(cls, hubUrl=None):
+        Genome.requestUrl = BASE_URL + f'/list/{Genome.getUrl(hubUrl)}'
+        Genome.requestParams = {'hubUrl': hubUrl}
+        Genome.responseKey = Genome.getKeyOfResponse(hubUrl)
+        return super().get()
 
-    pass
 
-    @staticmethod
-    def get(hubUrl=None):
-        URL = 'ucscGenomes' if hubUrl is None else 'hubGenomes'
-
-        response = requests.get(BASE_URL + f'/list/{URL}', {'hubUrl': hubUrl}).json()
-        raiseExceptionOfRequest(response)
-
-        genomesList = []
-        genomesResponse = 'ucscGenomes' if hubUrl is None else 'genomes'
-
-        for key in response[genomesResponse]:
-            genomesList.append(Genome(key, **response[genomesResponse][key]))
-        return genomesList
-
-    @staticmethod
-    def exists(genomeName):
-        for genome in Genome.get():
-            if genome.genomeName == genomeName:
-                return True
-
-        return False
 
     @property
     def tracks(self):
-        return Track.get(self.genomeName)
+        return Track.get(self.name)
 
     def findTrack(self, trackName):
-        return Track.find(self.genomeName, trackName)
+        return Track.find(self.name, trackName)
 
     def findTrackBy(self, attributeName, trackName):
-        return Track.findBy(self.genomeName, attributeName, trackName)
+        return Track.findBy(self.name, attributeName, trackName)
 
     def isTrackExists(self, trackName):
-        return Track.exists(self.genomeName, trackName)
+        return Track.exists(self.name, trackName)
 
     @staticmethod
-    def find(genomeName):
+    def find(name):
         for genome in Genome.get():
-            if genome.genomeName == genomeName:
-                print('genome found')
+            if genome.name == name:
                 return genome
-        raise Exception("can't find genome, Genome does not exist")
+        raise NotFoundException("can't find genome, Genome does not exist")
 
     @staticmethod
     def findBy(genomeAttribute, value):
         for genome in Genome.get():
             if getattr(genome, genomeAttribute) == value:
-                print('genome found')
                 return genome
-        raise Exception("can't find genome, Genome does not exist")
+        raise NotFoundException("can't find genome, Genome does not exist")
+
+    @classmethod
+    def getKeyOfResponse(cls, hubUrl):
+        return 'ucscGenomes' if hubUrl is None else 'genomes'
+
+    @classmethod
+    def getUrl(cls, hubUrl):
+        return 'ucscGenomes' if hubUrl is None else 'hubGenomes'
+
 
 
 # Genome.findBy('genomeName','PWK_PhJ')

@@ -1,12 +1,16 @@
 from ucsc.api import Genome, Track, Hub, Chromosome, Sequence
 
+hub = Hub.findBy('name','ALFA Hub')
 
-
-
-hub = Hub.find('ALFA Hub')
-
-print(hub.genomes.__dict__)
 print(hub.__dict__)
+#
+# hubs = Hub.get()
+# for i in hubs:
+#     print(i.__dict__)
+# hub = Hub.find('ALFA Hub')
+#
+# print(hub.genomes.__dict__)
+# print(hub.__dict__)
 
 # track = Track('gold')
 #

@@ -1,6 +1,6 @@
 import unittest
 
-from ucsc.api import Hub, NotFoundException
+from ucsc.api import Hub, NotFoundException, Genome, Track
 
 
 class MyTestCase(unittest.TestCase):
@@ -27,9 +27,34 @@ class MyTestCase(unittest.TestCase):
         genomes = hub.genomes
         self.assertIsInstance(genomes, list)
 
+    def test_it_can_find_a_genome_by_name_if_it_exists(self):
 
+        self.assertTrue(Genome.exists('hg38'))
+        genome = Genome.find('hg38')
+        self.assertIsInstance(genome, Genome)
 
+        with self.assertRaises(NotFoundException):
+            Genome.find('hsssg38')
 
+    def test_it_can_find_a_genome_by_attribute_if_it_exists(self):
+        genome = Genome.findBy('genomeName','hg38')
+        self.assertIsInstance(genome, Genome)
+
+        with self.assertRaises(NotFoundException):
+            Genome.findBy('genomeName','hsssg38')
+
+    def test_it_can_get_tracks_of_genome(self):
+        genome = Genome.findBy('genomeName', 'hg38')
+        tracks = genome.tracks
+        self.assertIsInstance(tracks, list)
+
+    def test_it_can_get_a_track_of_genome(self):
+        genome = Genome.findBy('genomeName', 'hg38')
+        self.assertTrue(genome.isTrackExists('gold'))
+        track = genome.findTrack('gold')
+        self.assertIsInstance(track, Track)
+        track2 = genome.findTrackBy('trackName','gold')
+        self.assertIsInstance(track2, Track)
 
 if __name__ == '__main__':
     unittest.main()
