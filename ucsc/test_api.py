@@ -76,7 +76,10 @@ class MyTestCase(unittest.TestCase):
         chromosomes = Chromosome.find('chr1',genome='hg38',track='gold')
         self.assertIsInstance(chromosomes,Chromosome)
 
+    def test_practical_example(self):
 
+        assembly = Genome.find('wuhCor1')
+        print(assembly.__dict__)
 
 if __name__ == '__main__':
     unittest.main()

@@ -34,19 +34,14 @@ class Model:
     def makeGetRequest(cls):
 
         response = requests.get(cls.requestUrl, cls.requestParams).json()
+
         raiseExceptionOfRequest(response)
         return response
 
     @classmethod
     def get(cls, *param):
         response = cls.makeGetRequest()
-        myList = []
-        for key in response[cls.responseKey]:
-            if type(key) is dict:
-                myList.append(cls(**key))
-            else:
-                myList.append(cls(key))
-        return myList
+        return cls.buildList(response)
 
     @classmethod
     def find(cls, name, *param):
@@ -70,12 +65,17 @@ class Model:
                 return True
         return False
 
+    @classmethod
+    def buildList(cls, response):
+        pass
+
 
 class Hub(Model):
     requestUrl = BASE_URL + '/list/publicHubs'
     responseKey = 'publicHubs'
 
-    def __init__(self, **kwargs):
+    def __init__(self ,**kwargs):
+
         self.name = kwargs.get('shortLabel')
         self.hubUrl = kwargs.get('hubUrl')
         self.longLabel = kwargs.get('longLabel')
@@ -88,6 +88,12 @@ class Hub(Model):
     def genomes(self):
         return Genome.get(self.hubUrl)
 
+    @classmethod
+    def buildList(cls,response):
+        myList = []
+        for key in response[cls.responseKey]:
+            myList.append(cls(**key))
+        return myList
 
 class Genome(Model):
     requestUrl = ''
@@ -111,11 +117,21 @@ class Genome(Model):
         self.description = kwargs.get('description')
 
     @classmethod
+    def buildList(cls, response):
+        myList = []
+        for key in response[cls.responseKey]:
+            myList.append(cls(key, **response[cls.responseKey][key]))
+        return myList
+
+    @classmethod
     def get(cls, hubUrl=None):
         Genome.requestUrl = BASE_URL + f'/list/{Genome.getUrl(hubUrl)}'
         Genome.requestParams = {'hubUrl': hubUrl}
         Genome.responseKey = Genome.getKeyOfResponse(hubUrl)
         return super().get()
+    @classmethod
+    def find(cls, name, *param):
+        return super().find(name)
 
     @property
     def tracks(self):
@@ -180,6 +196,13 @@ class Track(Model):
         self.longLabel = kwargs.get('longLabel')
         self.type = kwargs.get('type')
         self.shortLabel = kwargs.get('shortLabel')
+
+    @classmethod
+    def buildList(cls, response):
+        myList = []
+        for key in response[cls.responseKey]:
+            myList.append(cls(key, **response[cls.responseKey][key]))
+        return myList
 
     @classmethod
     def get(cls, genomeName):
@@ -261,6 +284,13 @@ class Chromosome(Model):
 
     def __init__(self, name):
         self.name = name
+
+    @classmethod
+    def buildList(cls, response):
+        myList = []
+        for key in response[cls.responseKey]:
+            myList.append(cls(key))
+        return myList
 
     @classmethod
     def get(cls, hub=None, genome=None, track=None):
